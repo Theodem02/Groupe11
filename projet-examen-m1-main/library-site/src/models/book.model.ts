@@ -8,5 +8,10 @@ export type PlainBookModel = {
     id: string;
     firstName: string;
     lastName: string;
+    photoUrl: string;
   };
+  genres: {
+    id: string;
+    name: string;
+  }[];
 };
