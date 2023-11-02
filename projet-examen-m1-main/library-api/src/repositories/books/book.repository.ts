@@ -43,4 +43,17 @@ export class BookRepository extends Repository<Book> {
 
     return adaptBookEntityToBookModel(book);
   }
+
+  /**
+   * Create a new book
+   * @param bookData Book's data
+   * @returns Created book
+   * @throws 400: invalid data
+   */
+  public async createBook(bookData: BookRepositoryOutput): Promise<BookRepositoryOutput> {
+    const book = this.create(bookData);
+    await this.save(book);
+
+    return adaptBookEntityToBookModel(book);
+  }
 }

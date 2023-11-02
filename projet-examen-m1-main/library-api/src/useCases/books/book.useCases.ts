@@ -27,4 +27,14 @@ export class BookUseCases {
   public async getById(id: BookId): Promise<BookUseCasesOutput> {
     return this.bookRepository.getById(id);
   }
+
+  /**
+   * Create a new book
+   * @param bookData Book's data
+   * @returns Created book
+   * @throws 400: invalid data
+   */
+  public async createBook(bookData: BookUseCasesOutput): Promise<BookUseCasesOutput> {
+    return this.bookRepository.createBook(bookData);
+  }
 }
