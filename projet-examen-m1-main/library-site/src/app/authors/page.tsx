@@ -3,6 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainAuthorModel } from '@/models';
+import Link from 'next/link';
 
 const AuthorsPage: FC = () => {
   const [authors, setAuthors] = useState<PlainAuthorModel[]>([]);
@@ -53,12 +54,14 @@ const AuthorsPage: FC = () => {
       />
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredAuthors.map((author) => (
+          <Link href={`/books/${author.id}`}>
           <li key={author.id} className="p-4 border border-gray-300 rounded-lg text-center">
             <div className="rounded-full overflow-hidden mx-auto w-24 h-24">
             <img src={author.photoUrl} alt={author.firstName}/>
             </div>
             <p className="mt-2 font-bold"> {author.id} - {author.firstName} {author.lastName} </p> 
           </li>
+          </Link>
         ))}
       </ul>
     </div>
