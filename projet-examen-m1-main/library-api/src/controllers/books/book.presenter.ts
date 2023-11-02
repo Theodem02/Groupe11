@@ -14,6 +14,8 @@ export class PlainBookPresenter {
 
   genres: string[];
 
+  authorId: string;
+
   private constructor(data: PlainBookPresenter) {
     Object.assign(this, data);
   }
@@ -25,6 +27,7 @@ export class PlainBookPresenter {
       genres: data.genres,
       writtenOn: data.writtenOn,
       author: data.author ? PlainAuthorPresenter.from(data.author) : null,
+      authorId: data.authorId,
     });
   }
 }
@@ -40,6 +43,8 @@ export class BookPresenter {
 
   genres: GenrePresenter[];
 
+  authorId: string;
+
   private constructor(data: BookPresenter) {
     Object.assign(this, data);
   }
@@ -51,6 +56,7 @@ export class BookPresenter {
       writtenOn: data.writtenOn,
       author: PlainAuthorPresenter.from(data.author),
       genres: data.genres.map(GenrePresenter.from),
+      authorId: data.authorId,
     });
   }
 }

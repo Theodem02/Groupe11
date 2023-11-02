@@ -23,6 +23,9 @@ export class Book extends BaseEntity {
   @Column({ type: 'date' })
   writtenOn: Date;
 
+  @Column()
+  authorId: string;
+
   @ManyToOne(() => Author, (author) => author.books, { onDelete: 'CASCADE' })
   author: Author;
 

@@ -7,6 +7,7 @@ export type PlainBookModel = {
   name: string;
   writtenOn: Date;
   author: PlainAuthorModel;
+  authorId: string;
   genres: string[];
 };
 
@@ -15,5 +16,6 @@ export type BookModel = {
   name: string;
   writtenOn: Date;
   author: Author;
+  authorId: string;
   genres: GenreModel[];
 };
