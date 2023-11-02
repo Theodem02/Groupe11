@@ -15,16 +15,23 @@
     "site:lint": "cd library-site && next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.0",
+    "breadcrumb": "^1.0.0",
     "next": "^13.5.6",
     "react": "^18",
     "react-dom": "^18",
+    "react-router-dom": "^6.18.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.6",
+    "styled-components": "^6.1.0",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {

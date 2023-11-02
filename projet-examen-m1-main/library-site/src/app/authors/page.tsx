@@ -40,19 +40,24 @@ const AuthorsPage: FC = () => {
 
   return (
     <div>
-      <h1>Authors</h1>
+      <h1 className="text-3xl font-bold w-full flex justify-center">Authors</h1>
+
+      
       {/* Barre de recherche */}
       <input
         type="text"
         placeholder="Rechercher un auteur"
         value={searchTerm}
         onChange={handleSearch}
+        className="w-1/4 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 m-4"
       />
-      <ul>
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredAuthors.map((author) => (
-          <li key={author.id}>
-            {author.id} - {author.firstName} {author.lastName} 
+          <li key={author.id} className="p-4 border border-gray-300 rounded-lg text-center">
+            <div className="rounded-full overflow-hidden mx-auto w-24 h-24">
             <img src={author.photoUrl} alt={author.firstName}/>
+            </div>
+            <p className="mt-2 font-bold"> {author.id} - {author.firstName} {author.lastName} </p> 
           </li>
         ))}
       </ul>
