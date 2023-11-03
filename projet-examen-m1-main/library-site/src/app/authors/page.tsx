@@ -54,7 +54,7 @@ const AuthorsPage: FC = () => {
       />
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredAuthors.map((author) => (
-          <Link href={`/books/${author.id}`}>
+          <Link href={`/authors/${author.id}`}>
           <li key={author.id} className="p-4 border border-gray-300 rounded-lg text-center">
             <div className="rounded-full overflow-hidden mx-auto w-24 h-24">
             <img src={author.photoUrl} alt={author.firstName}/>
