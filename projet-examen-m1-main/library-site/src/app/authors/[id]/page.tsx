@@ -60,7 +60,7 @@ const AuthorDetailsPage: FC = () => {
           <Card className="transition duration-300 ease-in-out transform hover:scale-105">
             <CardContent>
               <Typography variant="h5" component="div">
-                Books by {authorDetails.firstName} {authorDetails.lastName}
+              {authorBooks.length} Books by {authorDetails.firstName} {authorDetails.lastName}
               </Typography>
               <ul className="list-none mt-2">
                 {authorBooks.map((book) => (
