@@ -5,6 +5,7 @@ import {
   BookUseCasesOutput,
   PlainBookUseCasesOutput,
 } from 'library-api/src/useCases/books/book.useCases.type';
+import { PlainBookModel } from '../../models';
 
 @Injectable()
 export class BookUseCases {
@@ -16,6 +17,16 @@ export class BookUseCases {
    */
   public async getAllPlain(): Promise<PlainBookUseCasesOutput[]> {
     return this.bookRepository.getAllPlain();
+  }
+
+  /**
+   * Get books by author ID
+   * @param authorId Author's ID
+   * @returns Array of plain books belonging to the author
+   */
+  public async getBooksByAuthorId(authorId: string): Promise<PlainBookUseCasesOutput[]> {
+    const books: PlainBookModel[] = await this.bookRepository.getBooksByAuthorId(authorId);
+    return books;
   }
 
   /**

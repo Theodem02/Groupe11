@@ -56,4 +56,18 @@ export class BookRepository extends Repository<Book> {
 
     return adaptBookEntityToBookModel(book);
   }
+
+  /**
+   * Get books by author ID
+   * @param authorId Author's ID
+   * @returns Array of books by the author
+   */
+  public async getBooksByAuthorId(authorId: string): Promise<PlainBookRepositoryOutput[]> {
+    const books = await this.find({
+      where: { authorId }, // Assuming the field name in the Book entity is 'authorId'
+      relations: { bookGenres: { genre: true }, author: true },
+    });
+
+    return books.map(adaptBookEntityToPlainBookModel);
+  }
 }

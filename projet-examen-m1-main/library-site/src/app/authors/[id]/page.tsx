@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
-//import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainAuthorModel, PlainBookModel } from '../../../models';
@@ -16,12 +15,12 @@ const AuthorDetailsPage: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Récupérer les détails de l'auteur
+        // Récupérer les détails de l'auteur en utilisant l'ID de l'auteur
         const authorResponse = await axios.get<PlainAuthorModel>(`http://localhost:3001/authors/${id}`);
         setAuthorDetails(authorResponse.data);
 
-        // Récupérer la liste des livres de l'auteur
-        const booksResponse = await axios.get<PlainBookModel[]>(`http://localhost:3001/books?authorId=${id}`);
+        // Récupérer la liste des livres de l'auteur en utilisant l'ID de l'auteur
+        const booksResponse = await axios.get<PlainBookModel[]>(`http://localhost:3001/books/author/${id}`);
         setAuthorBooks(booksResponse.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
@@ -48,7 +47,11 @@ const AuthorDetailsPage: FC = () => {
                 {authorDetails.firstName} {authorDetails.lastName}
               </Typography>
               {authorDetails.photoUrl && (
-                <img src={authorDetails.photoUrl} alt={`${authorDetails.firstName} ${authorDetails.lastName}`} className="rounded-full overflow-hidden w-48 h-48 mx-auto mt-4" />
+                <img
+                  src={authorDetails.photoUrl}
+                  alt={`${authorDetails.firstName} ${authorDetails.lastName}`}
+                  className="rounded-full overflow-hidden w-48 h-48 mx-auto mt-4"
+                />
               )}
             </CardContent>
           </Card>
@@ -59,11 +62,11 @@ const AuthorDetailsPage: FC = () => {
               <Typography variant="h5" component="div">
                 Books by {authorDetails.firstName} {authorDetails.lastName}
               </Typography>
-              <ul className="list-disc mt-2">
+              <ul className="list-none mt-2">
                 {authorBooks.map((book) => (
                   <li key={book.id} className="mb-2">
                     <Link href={`/books/${book.id}`}>
-                      <a className="text-blue-500 hover:underline">{book.name}</a>
+                      <a className="text-gray-500 ">{book.name}</a>
                     </Link>
                   </li>
                 ))}
