@@ -12,6 +12,7 @@ const NavigationMenu = () => {
       <Link color="inherit" href="/">Homepage</Link>
       <Link color="inherit" href="/authors">Authors</Link>
       <Link color="inherit" href="/books">Books</Link>
+      <Link color="inherit" href="/users">Users</Link>
     </Breadcrumbs>
 
     </>

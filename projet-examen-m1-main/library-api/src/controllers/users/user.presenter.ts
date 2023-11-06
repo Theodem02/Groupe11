@@ -8,6 +8,8 @@ export class PlainUserPresenter {
 
   lastName: string;
 
+  bookId: string;
+
   private constructor(data: PlainUserPresenter) {
     Object.assign(this, data);
   }
@@ -17,6 +19,7 @@ export class PlainUserPresenter {
       id: data.id,
       firstName: data.firstName,
       lastName: data.lastName,
+      bookId: data.bookId,
     });
   }
 }
