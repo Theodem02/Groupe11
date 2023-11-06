@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BookId } from 'library-api/src/entities';
 import { BookRepository } from 'library-api/src/repositories';
+import { Genre } from 'library-api/src/entities';
 import {
   BookUseCasesOutput,
   PlainBookUseCasesOutput,
@@ -47,5 +48,15 @@ export class BookUseCases {
    */
   public async createBook(bookData: BookUseCasesOutput): Promise<BookUseCasesOutput> {
     return this.bookRepository.createBook(bookData);
+  }
+
+  /**
+   * Add a genre to a book and save it in the database
+   * @param bookId Book's ID
+   * @param genreId Genre's ID
+   * @returns Updated book
+   */
+  public async createBookGenres(bookId: BookId, genre: Genre): Promise<BookUseCasesOutput> {
+    return this.bookRepository.createBookGenres(bookId, genre);
   }
 }

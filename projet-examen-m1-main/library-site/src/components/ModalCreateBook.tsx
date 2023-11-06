@@ -7,13 +7,13 @@ interface ModalCreateBookProps {
   onClose: () => void;
   onCreateBook: (newBook: PlainBookModel) => void;
   authors: PlainAuthorModel[];
-  /*genres: {
+  genres: {
     id: string;
     name: string;
-  }[]*/
+  }[]
 }
 
-const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook, authors/*, genres*/ }) => {
+const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook, authors, genres }) => {
   const [bookData, setBookData] = useState({
     name: "",
     writtenOn: "",
@@ -23,12 +23,24 @@ const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook
         firstName: "",
         lastName: "",
     },
-    bookGenres: [],
+    genreId: "",
+    genres: [{
+      id: "",
+      name: "",
+    }],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if(name == "authorId"){
+    if (name === "genreId"){
+      setBookData((prevData) => ({
+        ...prevData,
+        genres: [{
+          id: value,
+          name: genres.find((genre) => genre.id === value)?.name || "",
+        }],
+      }));
+    } else if(name == "authorId"){
         const selectedAuthor = authors.find((author) => author.id === value);
         if (selectedAuthor) {
             // Mettez à jour les propriétés de l'auteur
@@ -113,14 +125,14 @@ const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook
             ))}
           </select>
         </div>
-        {/*<div className="mb-4">
+        <div className="mb-4">
           <label htmlFor="genreId" className="block text-sm font-medium text-gray-700">
             Sélectionner un genre
           </label>
           <select
             id="genreId"
             name="genreId"
-            value={bookData.authorId}
+            value={bookData.genreId}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
           >
@@ -131,7 +143,7 @@ const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook
               </option>
             ))}
           </select>
-            </div>*/}
+            </div>
         <div className="flex justify-end">
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-md mr-2"

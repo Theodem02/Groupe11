@@ -15,7 +15,7 @@ const BooksPage: FC = () => {
 
   // Modal Create Book
   const [authors, setAuthors] = useState<PlainAuthorModel[]>([]); // Liste des auteurs depuis la base de données
-  //const [genres, setGenre] = useState<{id: string, name: string}[]>([]); // Liste des genres depuis la base de données
+  const [genres, setGenre] = useState<{id: string, name: string}[]>([]); // Liste des genres depuis la base de données
 
   useEffect(() => {
     axios.get<PlainBookModel[]>('http://localhost:3001/books').then((response) => {
@@ -27,6 +27,11 @@ const BooksPage: FC = () => {
     axios.get<PlainAuthorModel[]>('http://localhost:3001/authors').then((response) => {
       const authorData = response.data;
       setAuthors(authorData);
+    });
+
+    axios.get<{id: string, name: string}[]>('http://localhost:3001/genres').then((response) => {
+      const genreData = response.data;
+      setGenre(genreData);
     });
   }, []);
 
@@ -102,7 +107,7 @@ const BooksPage: FC = () => {
         Créer un livre
       </button>
       {showCreateModal && (
-        <ModalCreateBook onClose={closeCreateModal} onCreateBook={createBook} authors={authors} />
+        <ModalCreateBook onClose={closeCreateModal} onCreateBook={createBook} authors={authors} genres={genres}/>
       )}
         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
           {filteredBooks.map((book) => (

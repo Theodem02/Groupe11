@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'library-api/src/common/errors';
 import { Book, BookId } from 'library-api/src/entities';
+import { BookGenre, BookGenreId } from 'library-api/src/entities';
+import { Genre } from 'library-api/src/entities';
+
 import {
   BookRepositoryOutput,
   PlainBookRepositoryOutput,
@@ -70,4 +73,28 @@ export class BookRepository extends Repository<Book> {
 
     return books.map(adaptBookEntityToPlainBookModel);
   }
+
+  /**
+   * Add a genre to a book and save it in the database
+   * @param bookId Book's ID
+   * @param genreId Genre's ID
+   * @returns Updated book
+   */
+  public async createBookGenres(bookId: BookId, genre: Genre): Promise<BookRepositoryOutput> {
+    const book = await this.findOne({ where: { id: bookId }, relations: { bookGenres: { genre: true }, author: true } });
+    if (!book) {
+      throw new NotFoundError(`Book - '${bookId}'`);
+    }
+
+    const bookGenre = new BookGenre();
+    bookGenre.id = genre.id.toString() as BookGenreId;
+    bookGenre.book = book;
+    bookGenre.genre = genre;
+
+    book.bookGenres.push(bookGenre);
+    await bookGenre.save();
+
+    return adaptBookEntityToBookModel(book);
+  }
+
 }
