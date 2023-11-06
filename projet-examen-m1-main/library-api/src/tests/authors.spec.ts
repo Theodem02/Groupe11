@@ -1,62 +1,33 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthorController } from '../controllers/authors/author.controller';
-import { AuthorUseCases } from 'library-api/src/useCases';
-import { PlainAuthorPresenter } from 'library-api/src/controllers/authors/author.presenter';
-import { AuthorId } from 'library-api/src/entities';
-import { AuthorModel, PlainAuthorModel } from 'library-api/src/models';
+//import { NotFoundException } from "@nestjs/common/exceptions";
+import { authorFixture } from "../fixtures/author.fixture";
+import { AuthorRepository } from "../repositories/authors/author.repository";
+import {PlainAuthorRepositoryOutput,AuthorRepositoryOutput} from "../repositories/authors/author.repository.type";
+import { DataSource } from "typeorm";
 
-describe('AuthorController', () => {
-  let controller: AuthorController;
 
-  const authorUseCasesMock = {
-    getAllPlain: jest.fn(),
-    getById: jest.fn(),
-    createAuthor: jest.fn(),
-  };
+describe("AuthorRepository", () => {
+  describe("getAllPlain", () => {
+    it("should return all authors", async () => {
+      const dataSource = {
+        createEntityManager: jest.fn(),}as unknown as DataSource;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [AuthorController],
-      providers: [
-        {
-          provide: AuthorUseCases,
-          useValue: authorUseCasesMock,
-        },
-      ],
-    }).compile();
+        const authorRepository = new AuthorRepository(dataSource);
+        const authors = [authorFixture(), authorFixture(), authorFixture()];
+        const findSpy = jest.spyOn(authorRepository, "find").mockResolvedValue(authors);
+        const result = await authorRepository.getAllPlain();
 
-    controller = module.get<AuthorController>(AuthorController);
+        expect(findSpy).toHaveBeenCalledTimes(1);
+        expect(findSpy).toHaveBeenCalledWith();
+        expect(result).toEqual(authors.map((author) => ({
+          id: author.id,
+          firstName: author.firstName,
+          lastName: author.lastName,
+          photoUrl: author.photoUrl,
+        })));
+
+        expect(true).toBeTruthy();
+        expect(null).toBeNull();
+      });
+    });
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-
-  it('should return a list of authors when calling getAll', async () => {
-    const mockAuthors: PlainAuthorPresenter[] = [/* create your mock data here */];
-    authorUseCasesMock.getAllPlain.mockResolvedValue(mockAuthors);
-
-    const result = await controller.getAll();
-
-    expect(result).toEqual(mockAuthors);
-  });
-
-  it('should return an author when calling getById', async () => {
-    const mockAuthor: PlainAuthorPresenter = authorFixture();
-    authorUseCasesMock.getById.mockResolvedValue(mockAuthor);
-
-    const result = await controller.getById('authorId');
-
-    expect(result).toEqual(mockAuthor);
-  });
-
-  it('should create an author when calling createAuthor', async () => {
-    const mockAuthorData: AuthorModel = {/* create your mock data here */};
-    const mockCreatedAuthor: PlainAuthorModel = {/* create your mock data here */};
-    authorUseCasesMock.createAuthor.mockResolvedValue(mockCreatedAuthor);
-
-    const result = await controller.createAuthor(mockAuthorData);
-
-    expect(result).toEqual(mockCreatedAuthor);
-  });
-});

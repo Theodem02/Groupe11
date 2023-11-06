@@ -9,6 +9,7 @@
     "api:start:dev": "cd library-api && nest start --watch",
     "api:lint": "eslint \"library-api/**/*.ts\" --fix",
     "api:test": "jest",
+    "api:test:cov": "jest --coverage",
     "site:dev": "cd library-site && next dev",
     "site:build": "cd library-site && next build",
     "site:start": "cd library-site && next start",
