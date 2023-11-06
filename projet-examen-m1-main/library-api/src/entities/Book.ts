@@ -14,8 +14,8 @@ export type BookId = string & { __brand: 'Book' };
 
 @Entity('Books')
 export class Book extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: BookId;
+  @PrimaryGeneratedColumn()
+  id: BookId; 
 
   @Column()
   name: string;
