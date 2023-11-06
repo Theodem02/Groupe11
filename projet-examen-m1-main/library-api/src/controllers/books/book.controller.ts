@@ -11,6 +11,12 @@ import { BookUseCases } from 'library-api/src/useCases';
 export class BookController {
   constructor(private readonly bookUseCases: BookUseCases) {}
 
+  @Get('/')
+  public async getAll(): Promise<PlainBookPresenter[]> {
+    const books = await this.bookUseCases.getAllPlain();
+    return books.map(PlainBookPresenter.from);
+  }
+
   @Get('/author/:authorId') // Nouvel endpoint pour récupérer les livres par l'ID de l'auteur
   public async getBooksByAuthorId(@Param('authorId') authorId: string): Promise<PlainBookPresenter[]> {
     const books = await this.bookUseCases.getBooksByAuthorId(authorId);
