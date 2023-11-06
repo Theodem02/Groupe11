@@ -29,5 +29,44 @@ describe("AuthorRepository", () => {
         expect(null).toBeNull();
       });
     });
+    describe("getById", () => {
+      it("should return an author by its id", async () => {
+        const dataSource = {
+          createEntityManager: jest.fn(),}as unknown as DataSource;
+
+          const authorRepository = new AuthorRepository(dataSource);
+          const author = authorFixture();
+          const findSpy = jest.spyOn(authorRepository, "findOne").mockResolvedValue(author);
+          const result = await authorRepository.getById(author.id);
+
+          expect(findSpy).toHaveBeenCalledTimes(1);
+          expect(findSpy).toHaveBeenCalledWith({where: {id: author.id}});
+          expect(result).toEqual({
+            id: author.id,
+            firstName: author.firstName,
+            lastName: author.lastName,
+            photoUrl: author.photoUrl,
+          });
+      });
   });
+    describe('createAuthor', () => {
+      it('should create a new author', async () => {
+        const dataSource = {
+          createEntityManager: jest.fn(),}as unknown as DataSource;
+
+          const authorRepository = new AuthorRepository(dataSource);
+          const author = authorFixture();
+          const createSpy = jest.spyOn(authorRepository, 'create').mockReturnValue(author);
+          const saveSpy = jest.spyOn(authorRepository, 'save').mockResolvedValue(author);
+          const result = await authorRepository.createAuthor(author);
+
+          expect(createSpy).toHaveBeenCalledTimes(1);
+          expect(createSpy).toHaveBeenCalledWith(author);
+          expect(saveSpy).toHaveBeenCalledTimes(1);
+          expect(saveSpy).toHaveBeenCalledWith(author);
+          expect(result).toEqual(author);
+      });
+    });
+});
+
 
