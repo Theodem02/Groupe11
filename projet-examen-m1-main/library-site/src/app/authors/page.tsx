@@ -55,6 +55,14 @@ const AuthorsPage: FC = () => {
     setShowCreateModal(false);
   };
 
+  const createAuthor = (newAuthor: PlainAuthorModel) => {
+    axios.post('http://localhost:3001/authors', newAuthor).then((response) => {
+      const authorData = response.data;
+      setAuthorsWithBookCount([...authorsWithBookCount, authorData]);
+    });
+    closeCreateModal();
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold w-full flex justify-center">Authors</h1>
@@ -70,7 +78,7 @@ const AuthorsPage: FC = () => {
       <button className="bg-green-400 text-white py-1 px-1 rounded-md m-4" onClick={openCreateModal}>
         Créer un auteur
       </button>
-      {showCreateModal && <ModalCreateAuthor onClose={closeCreateModal} />}
+      {showCreateModal && <ModalCreateAuthor onClose={closeCreateModal} onCreateAuthor={createAuthor}/>}
       {/* Liste des auteurs filtrés */}
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredAuthors.map((author) => (
