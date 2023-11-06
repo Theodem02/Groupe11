@@ -47,7 +47,7 @@ const BooksPage: FC = () => {
   const handleSortById = () => {
     const sortedBooks = [...filteredBooks];
     sortedBooks.sort((a, b) =>
-      sortBy === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id)
+      sortBy === 'asc' ? parseInt(a.id) - parseInt(b.id) : parseInt(b.id) - parseInt(a.id)
     );
     setSortBy(sortBy === 'asc' ? 'desc' : 'asc');
     setFilteredBooks(sortedBooks);
