@@ -13,4 +13,7 @@ export class User extends BaseEntity {
     
     @Column()
     lastName: string;
+
+    @Column()
+    bookId: string;
 }
