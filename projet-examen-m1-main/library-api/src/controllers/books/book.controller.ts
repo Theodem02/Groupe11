@@ -51,4 +51,10 @@ export class BookController {
 
     return plainBook;
   }
+
+  // Fonction pour supprimer avec son id
+  @Post('/delete/:id')
+  public async deleteBook(@Param('id') id: BookId): Promise<void> {
+    await this.bookUseCases.deleteBook(id);
+  }
 }

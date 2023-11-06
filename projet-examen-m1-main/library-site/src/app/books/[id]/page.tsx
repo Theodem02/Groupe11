@@ -25,6 +25,17 @@ const BooksDetailsPage: FC = () => {
     setIsModalOpen(false);
   }
 
+  const onDeleteBook = () => {
+    axios.post(`http://localhost:3001/books/delete/${id}`)
+      .then((response) => {
+        closeModal();
+        window.location.href = '/books';
+      })
+      .catch((error) => {
+        console.error('Error deleting book:', error);
+      });
+  }
+
 
   useEffect(() => {
     if (id) {
@@ -37,6 +48,7 @@ const BooksDetailsPage: FC = () => {
         });
     }
   }, [id]);
+  
   console.log(bookDetails);
   if (!bookDetails) {
     return <p>Loading...</p>;
@@ -75,7 +87,7 @@ const BooksDetailsPage: FC = () => {
       <button className="block mx-auto bg-red-500 text-white py-2 px-4 rounded"
       onClick={openModal}
       >Supprimer le livre</button>
-      {isModalOpen && (<ModalDeleteBook onClose={closeModal} /*onDelete={handleDelete}*/  />)}
+      {isModalOpen && (<ModalDeleteBook onClose={closeModal} onDelete={onDeleteBook}/>)}
 
 
     </div>

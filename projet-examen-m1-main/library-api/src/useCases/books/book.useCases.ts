@@ -59,4 +59,13 @@ export class BookUseCases {
   public async createBookGenres(bookId: BookId, genre: Genre): Promise<BookUseCasesOutput> {
     return this.bookRepository.createBookGenres(bookId, genre);
   }
+
+  /**
+   * Delete a book
+   * @param id Book's ID
+   * @returns Deleted book
+   */
+  public async deleteBook(id: BookId): Promise<BookUseCasesOutput> {
+    return this.bookRepository.deleteBook(id);
+  }
 }

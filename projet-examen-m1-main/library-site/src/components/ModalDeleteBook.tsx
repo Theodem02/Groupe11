@@ -3,19 +3,15 @@ import { PlainBookModel } from '../models/book.model';
 
 interface ModalDeleteBookProps{
      onClose: () => void;
-   /*  onDelete: ()=>void;*/
+     onDelete: ()=>void;
 
 }
+const ModalDeleteBook: React.FC<ModalDeleteBookProps> = ({ onClose, onDelete }) => {
 
-  // supprimer :
+  const handleDeleteBook = () => {
+    onDelete();
+  }
 
-  const handleDelete = () => {
-
-    console.log("noice");
- }
-
-
-const ModalDeleteBook: React.FC<ModalDeleteBookProps> = ({ onClose,/* onDelete*/ }) => {
     return (
       <div className="fixed inset-0 flex items-center justify-center z-50">
         <div className="modal fixed inset-0 bg-gray-800 bg-opacity-70">
@@ -23,9 +19,9 @@ const ModalDeleteBook: React.FC<ModalDeleteBookProps> = ({ onClose,/* onDelete*/
             <h1 className="text-2xl font-semibold mb-4">Supprimer un livre</h1>
             <p className="text-gray-600 mb-4">Êtes-vous sûr de vouloir supprimer ce livre ?</p>
             <div className="flex justify-end">
-              <button
+              <button  
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-               /*  onClick={onDelete}*/
+                onClick={handleDeleteBook}
               >
                 Supprimer
               </button>

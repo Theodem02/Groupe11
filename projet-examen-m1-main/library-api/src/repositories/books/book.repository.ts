@@ -97,4 +97,20 @@ export class BookRepository extends Repository<Book> {
     return adaptBookEntityToBookModel(book);
   }
 
+  /**
+   * Delete a book
+   * @param id Book's ID
+   * @returns Deleted book
+   */
+  public async deleteBook(id: BookId): Promise<BookRepositoryOutput> {
+    const book = await this.findOne({ where: { id }, relations: { bookGenres: { genre: true }, author: true } });
+    if (!book) {
+      throw new NotFoundError(`Book - '${id}'`);
+    }
+
+    await this.delete(id);
+
+    return adaptBookEntityToBookModel(book);
+  }
+
 }
