@@ -48,7 +48,7 @@ const BooksDetailsPage: FC = () => {
           <span className="font-semibold">Author Last Name:</span> {bookDetails.author.lastName}
         </div>
         <div className="text-lg text-gray-600">
-          <span className="font-semibold">Genre:</span> {bookDetails.genres[0].name}
+          <span className="font-semibold">Genre:</span> {bookDetails.genres.length > 0 ? bookDetails.genres[0].name : ''}
         </div>
       </div>
       <div className="rounded-full overflow-hidden mx-auto w-48 h-48">
