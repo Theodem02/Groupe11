@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { UserId } from "library-api/src/entities";
-import { UserRepository } from "library-api/src/repositories";
-import { UserUseCasesOutput, PlainUserUseCasesOutput } from "library-api/src/useCases/users/user.useCases.type";
+import { UserId } from "../../entities";
+import { UserRepository } from "../../repositories";
+import { UserUseCasesOutput, PlainUserUseCasesOutput } from "./user.useCases.type";
 
 @Injectable()
 export class UserUseCases {

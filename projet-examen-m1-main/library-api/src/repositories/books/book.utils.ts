@@ -2,7 +2,7 @@ import { Book } from 'library-api/src/entities';
 import {
   BookRepositoryOutput,
   PlainBookRepositoryOutput,
-} from 'library-api/src/repositories/books/book.repository.type';
+} from './book.repository.type';
 
 export const adaptBookEntityToPlainBookModel = (
   book: Book,

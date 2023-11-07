@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { BookId } from 'library-api/src/entities';
-import { BookRepository } from 'library-api/src/repositories';
-import { Genre } from 'library-api/src/entities';
+import { BookId } from '../../entities';
+import { BookRepository } from '../../repositories';
+import { Genre } from '../../entities';
 import {
   BookUseCasesOutput,
   PlainBookUseCasesOutput,
-} from 'library-api/src/useCases/books/book.useCases.type';
+} from './book.useCases.type';
 import { PlainBookModel } from '../../models';
 
 @Injectable()

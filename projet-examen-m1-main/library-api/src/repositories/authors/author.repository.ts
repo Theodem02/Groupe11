@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'library-api/src/common/errors';
-import { Author, AuthorId } from 'library-api/src/entities';
+import { NotFoundError } from '../../common/errors';
+import { Author, AuthorId } from '../../entities';
 import {
   PlainAuthorRepositoryOutput,
   AuthorRepositoryOutput,

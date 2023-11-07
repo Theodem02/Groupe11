@@ -1,8 +1,8 @@
-import { Author } from 'library-api/src/entities/Author';
-import { Book } from 'library-api/src/entities/Book';
-import { BookGenre } from 'library-api/src/entities/BookGenre';
-import { Genre } from 'library-api/src/entities/Genre';
-import { User } from 'library-api/src/entities/User';
+import { Author } from '../entities/Author';
+import { Book } from '../entities/Book';
+import { BookGenre } from '../entities/BookGenre';
+import { Genre } from '../entities/Genre';
+import { User } from '../entities/User';
 
 export * from './Author';
 // eslint-disable-next-line import/no-cycle

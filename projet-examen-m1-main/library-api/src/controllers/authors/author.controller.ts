@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { PlainAuthorPresenter } from 'library-api/src/controllers/authors/author.presenter';
-import { AuthorId } from 'library-api/src/entities';
-import { AuthorModel, PlainAuthorModel } from 'library-api/src/models';
-import { AuthorUseCases } from 'library-api/src/useCases';
+import { PlainAuthorPresenter } from './author.presenter';
+import { AuthorId } from '../../entities';
+import { AuthorModel, PlainAuthorModel } from '../../models';
+import { AuthorUseCases } from '../../useCases';
 
 @Controller('authors')
 export class AuthorController {
@@ -24,7 +24,7 @@ export class AuthorController {
     @Post('/')
     public async createAuthor(@Body() authorData: AuthorModel): Promise<{}> {
         const newAuthor = await this.authorUseCases.createAuthor(authorData);
-    
+
         const plainAuthor: PlainAuthorModel = {
             id: newAuthor.id,
             firstName: newAuthor.firstName,

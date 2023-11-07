@@ -1,4 +1,4 @@
-import { GenreModel, PlainGenreModel } from 'library-api/src/models/genre.model';
+import { GenreModel, PlainGenreModel } from '../../models/genre.model';
 
 export type PlainGenreRepositoryOutput = PlainGenreModel;
 export type GenreRepositoryOutput = GenreModel;

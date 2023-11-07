@@ -1,4 +1,4 @@
-import { AuthorModel, PlainAuthorModel } from 'library-api/src/models';
+import { AuthorModel, PlainAuthorModel } from '../../models';
 
 export type PlainAuthorUseCasesOutput = PlainAuthorModel;
 export type AuthorUseCasesOutput = AuthorModel;

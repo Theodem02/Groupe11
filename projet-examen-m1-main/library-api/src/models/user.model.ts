@@ -1,4 +1,4 @@
-import { UserId } from 'library-api/src/entities';
+import { UserId } from '../entities';
 
 export type PlainUserModel = {
     id: UserId;

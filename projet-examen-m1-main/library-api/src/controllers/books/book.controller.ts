@@ -2,11 +2,11 @@ import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import {
   BookPresenter,
   PlainBookPresenter,
-} from 'library-api/src/controllers/books/book.presenter';
-import { BookId } from 'library-api/src/entities';
-import { BookModel, PlainBookModel } from 'library-api/src/models';
-import { Genre, GenreId } from 'library-api/src/entities';
-import { BookUseCases } from 'library-api/src/useCases';
+} from './book.presenter';
+import { BookId } from '../../entities';
+import { BookModel, PlainBookModel } from '../../models';
+import { Genre, GenreId } from '../../entities';
+import { BookUseCases } from '../../useCases';
 
 @Controller('books')
 export class BookController {
@@ -37,7 +37,7 @@ export class BookController {
     const newGenre = new Genre();
     newGenre.id = bookData.genres[0].id as GenreId;
     newGenre.name = bookData.genres[0].name;
-    
+
     await this.bookUseCases.createBookGenres(newBook.id, newGenre);
 
     const plainBook: PlainBookModel = {

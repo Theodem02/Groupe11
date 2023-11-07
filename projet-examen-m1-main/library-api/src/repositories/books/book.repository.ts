@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'library-api/src/common/errors';
-import { Book, BookId } from 'library-api/src/entities';
-import { BookGenre, BookGenreId } from 'library-api/src/entities';
-import { Genre } from 'library-api/src/entities';
+import { NotFoundError } from '../../common/errors';
+import { Book, BookId } from '../../entities';
+import { BookGenre, BookGenreId } from '../../entities';
+import { Genre } from '../../entities';
 
 import {
   BookRepositoryOutput,
   PlainBookRepositoryOutput,
-} from 'library-api/src/repositories/books/book.repository.type';
+} from './book.repository.type';
 import {
   adaptBookEntityToBookModel,
   adaptBookEntityToPlainBookModel,
-} from 'library-api/src/repositories/books/book.utils';
+} from './book.utils';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()

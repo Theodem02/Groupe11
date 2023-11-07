@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Genre } from 'library-api/src/entities';
+import { Genre } from '../../entities';
 import { DataSource, Repository } from 'typeorm';
-import { PlainGenreRepositoryOutput, GenreRepositoryOutput } from 'library-api/src/repositories/genres/genre.repository.type';
+import { PlainGenreRepositoryOutput, GenreRepositoryOutput } from './genre.repository.type';
 
 @Injectable()
 export class GenreRepository extends Repository<Genre> {

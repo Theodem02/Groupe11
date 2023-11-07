@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthorId } from 'library-api/src/entities';
-import { AuthorRepository } from 'library-api/src/repositories';
+import { AuthorId } from '../../entities';
+import { AuthorRepository } from '../../repositories';
 import {
   AuthorUseCasesOutput,
   PlainAuthorUseCasesOutput,
-} from 'library-api/src/useCases/authors/author.useCases.type';
+} from './author.useCases.type';
 
 @Injectable()
 export class AuthorUseCases {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'library-api/src/common/errors';
-import { User, UserId } from 'library-api/src/entities';
-import { PlainUserRepositoryOutput, UserRepositoryOutput } from 'library-api/src/repositories/users/user.repository.type';
+import { NotFoundError } from '../../common/errors';
+import { User, UserId } from '../../entities';
+import { PlainUserRepositoryOutput, UserRepositoryOutput } from './user.repository.type';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
