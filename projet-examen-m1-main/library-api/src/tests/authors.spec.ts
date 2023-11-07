@@ -97,6 +97,33 @@ describe("AuthorUseCases", () => {
         photoUrl: author.photoUrl,
       })));
     });
+    describe("getById", () => {
+      it("should return an author by its id", async () => {
+        const dataSource = {createEntityManager: jest.fn(),}as unknown as DataSource;
+        const authorRepository = new AuthorRepository(dataSource);
+        const authorUseCases = new AuthorUseCases(authorRepository);
+        const author = authorFixture();
+
+        const getByIdSpy = jest.spyOn(authorRepository, "getById").mockResolvedValue({
+          id: author.id,
+          firstName: author.firstName,
+          lastName: author.lastName,
+          photoUrl: author.photoUrl
+        });
+
+        const result = await authorUseCases.getById(author.id);
+
+        expect(getByIdSpy).toHaveBeenCalledTimes(1);
+        expect(getByIdSpy).toHaveBeenCalledWith(author.id);
+
+        expect(result).toEqual({
+          id: author.id,
+          firstName: author.firstName,
+          lastName: author.lastName,
+          photoUrl: author.photoUrl
+        });
+      });
+    });
   });
 });
 

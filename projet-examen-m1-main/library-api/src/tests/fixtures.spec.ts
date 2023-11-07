@@ -3,7 +3,7 @@ import { booksFixture } from "../fixtures";
 import { genreFixture } from "../fixtures/genre.fixture";
 
 //test the author fixture properties
-describe.skip('authorFixture', () => {
+describe('authorFixture', () => {
     it('should return an author', () => {
         const author = authorFixture();
         expect(author).toHaveProperty('id');
