@@ -14,7 +14,7 @@ const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const [authorDetails, setAuthorDetails] = useState<PlainAuthorModel | null>(null);
   const [authorBooks, setAuthorBooks] = useState<PlainBookModel[]>([]);
-
+  const [books , setBooks] = useState<PlainBookModel[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false) ;
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isModalOpenBook, setIsModalOpenBook] = useState(false) ; 
@@ -86,6 +86,7 @@ const AuthorDetailsPage: FC = () => {
 
         // Récupérer la liste complète de tous les livres
         const allBooksResponse = await axios.get<PlainBookModel[]>(`http://localhost:3001/books`);
+        setBooks(allBooksResponse.data);
 
         // Filtrer les livres pour ne garder que ceux de l'auteur actuel
         const authorBooksData = allBooksResponse.data.filter((book) => book.authorId === id);
@@ -162,7 +163,7 @@ const AuthorDetailsPage: FC = () => {
           className="bg-green-400 text-white py-1 px-1 rounded-md m-4"
           onClick={openCreateModal}
           >Ajouter un livre </button>
-          { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook} books={authorBooks}/>
+          { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook} books={books}/>
           )}
     </div>
   );

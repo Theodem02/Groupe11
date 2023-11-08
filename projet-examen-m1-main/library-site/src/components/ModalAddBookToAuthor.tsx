@@ -18,7 +18,7 @@ const ModalAddBookToAuthor: React.FC<ModalAddBookProps> = ({onClose,onCreateBook
     writtenOn: "",
     })
 
-    const handleCreateBook = ()=>{
+    const handleAddBook = ()=>{
          
        onClose();
     };
@@ -41,7 +41,9 @@ const ModalAddBookToAuthor: React.FC<ModalAddBookProps> = ({onClose,onCreateBook
             <option value="-1"> selectionner un book</option>
               
               {books.map((books)=>(
-                  <option key={books.name} value={books.name} ></option>
+                  <option key={books.name} value={books.name} >
+                    {books.name}
+                  </option>
 
               ) )}
             </select>
