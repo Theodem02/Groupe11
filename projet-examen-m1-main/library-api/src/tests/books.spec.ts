@@ -7,13 +7,15 @@ import { DataSource } from "typeorm";
 
 
 describe("BookRepository", () => {
+    const dataSource = {
+        createEntityManager: jest.fn(),
+    } as unknown as DataSource;
+    const book = booksFixture();
+    const bookRepository = new BookRepository(dataSource);
+
     describe("getAllPlain", () => {
         it("should return all books", async () => {
-            const dataSource = {
-                createEntityManager: jest.fn(),
-            } as unknown as DataSource;
 
-            const bookRepository = new BookRepository(dataSource);
             const books = [booksFixture(), booksFixture(), booksFixture()];
             const findSpy = jest.spyOn(bookRepository, "find").mockResolvedValue(books);
             const result = await bookRepository.getAllPlain();
@@ -21,7 +23,46 @@ describe("BookRepository", () => {
             expect(findSpy).toHaveBeenCalledTimes(1);
             expect(findSpy).toHaveBeenCalledWith({ relations: { bookGenres: { genre: true }, author: true } });
             expect(result).toEqual(books.map((adaptBookEntityToPlainBookModel)));
-
         });
     });
+
+    describe("getById", () => {
+        it("should return all books with a given id", async () => {
+
+            const findSpy = jest.spyOn(bookRepository, "findOne").mockResolvedValue(book);
+            const result = await bookRepository.getById(book.id);
+
+            expect(findSpy).toHaveBeenCalledTimes(1);
+            expect(findSpy).toHaveBeenCalledWith({ where: { id: book.id }, relations: { bookGenres: { genre: true }, author: true } });
+            expect(result).toEqual(adaptBookEntityToPlainBookModel(book));
+        });
+    });
+
+    describe("create", () => {
+        it("should create a new book", async () => {
+            //todo
+        });
+    });
+
+    describe("getByAuthorId", () => {
+        it("should return all books with a given authorId", async () => {
+            const findSpy = jest.spyOn(bookRepository, "find").mockResolvedValue([book]);
+            const result = await bookRepository.getBooksByAuthorId(book.authorId);
+
+            expect(findSpy).toHaveBeenCalledTimes(2);
+            expect(findSpy).toHaveBeenCalledWith({ where: { authorId: book.authorId }, relations: { bookGenres: { genre: true }, author: true } });
+            expect(result).toEqual([adaptBookEntityToPlainBookModel(book)]);
+        });
+    });
+
+    describe("create book genre",() => {
+        it("should create a new book genre", async () => {
+            const findSpy = jest.spyOn(bookRepository, "findOne").mockResolvedValue(book);
+            //const result = await bookRepository.createBookGenres(book.id, book.bookGenres[0].genreId);
+
+
+        });
+
+    });
 });
+
