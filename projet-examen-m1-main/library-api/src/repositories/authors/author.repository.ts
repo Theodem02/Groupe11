@@ -60,4 +60,18 @@ export class AuthorRepository extends Repository<Author> {
 
     return author;
   }
+
+  /**
+   * Delete an author by their ID
+   * @param id Author's ID
+   * @throws 404: author with this ID was not found
+   */
+
+  public async deleteAuthor(id: AuthorId): Promise<void> {
+    const author = await this.findOne({ where: { id } });
+    if (!author) {
+      throw new NotFoundError(`Author - '${id}'`);
+    }
+    await this.delete(id);
+  }
 }

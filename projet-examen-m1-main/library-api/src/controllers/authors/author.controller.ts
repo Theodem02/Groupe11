@@ -30,8 +30,12 @@ export class AuthorController {
             firstName: newAuthor.firstName,
             lastName: newAuthor.lastName,
             photoUrl: newAuthor.photoUrl,
+        }
+        return plainAuthor;
     }
 
-    return plainAuthor;
-  }
+    @Post('/delete/:id')
+    public async deleteAuthor(@Param('id') id: AuthorId): Promise<void> {
+        await this.authorUseCases.deleteAuthor(id);
+    }
 }

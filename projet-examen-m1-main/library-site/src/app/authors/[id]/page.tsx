@@ -6,27 +6,47 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainAuthorModel, PlainBookModel } from '../../../models';
 import Link from '@mui/material/Link';
-import ModalAddBookToAuthor from '@/components/ModalAddBookToAuthor';
+import ModalDeleteBook from '@/components/ModalDeleteBook';
+import ModalDeleteAuthor from '@/components/ModalDeleteAuthor';
 
 const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const [authorDetails, setAuthorDetails] = useState<PlainAuthorModel | null>(null);
   const [authorBooks, setAuthorBooks] = useState<PlainBookModel[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false) ;
 
-  // pour afficher/enlever la modale : 
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  // gerer les fermetures et ouvertures de la modale :
 
-  const openCreateModal = () => {
-    setShowCreateModal(true);
-  };
+  const openModal = () =>{
 
-  const closeCreateModal = () => {
-    setShowCreateModal(false);
-  };
+    setIsModalOpen(true);
+  }
 
-  // fonction pour ajouter un livre :
-  const Addbook = () =>{
+  const closeModal =()=>{
 
+    setIsModalOpen(false);
+  }
+
+  const onDeleteBook = (bookId: string) => {
+    axios.post(`http://localhost:3001/books/delete/${bookId}`)
+      .then((response) => {
+        closeModal();
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Error deleting book:', error);
+      });
+  }
+
+  const onDeleteAuthor = () => {
+    axios.post(`http://localhost:3001/authors/delete/${id}`)
+      .then((response) => {
+        closeModal();
+        window.location.href = '/authors';
+      })
+      .catch((error) => {
+        console.error('Error deleting author:', error);
+      });
   }
   
   useEffect(() => {
@@ -36,9 +56,12 @@ const AuthorDetailsPage: FC = () => {
         const authorResponse = await axios.get<PlainAuthorModel>(`http://localhost:3001/authors/${id}`);
         setAuthorDetails(authorResponse.data);
 
-        // Récupérer la liste des livres de l'auteur en utilisant l'ID de l'auteur
-        const booksResponse = await axios.get<PlainBookModel[]>(`http://localhost:3001/books/author/${id}`);
-        setAuthorBooks(booksResponse.data);
+        // Récupérer la liste complète de tous les livres
+        const allBooksResponse = await axios.get<PlainBookModel[]>(`http://localhost:3001/books`);
+
+        // Filtrer les livres pour ne garder que ceux de l'auteur actuel
+        const authorBooksData = allBooksResponse.data.filter((book) => book.authorId === id);
+        setAuthorBooks(authorBooksData);
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
       }
@@ -52,6 +75,8 @@ const AuthorDetailsPage: FC = () => {
   if (!authorDetails) {
     return <p>Loading...</p>;
   }
+  console.log(authorDetails);
+  console.log(authorBooks); 
 
   return (
     <div className="bg-gray-100 p-4 border border-gray-300 rounded-lg shadow-md text-center">
@@ -77,7 +102,7 @@ const AuthorDetailsPage: FC = () => {
           <Card className="transition duration-300 ease-in-out transform hover:scale-105">
             <CardContent>
               <Typography variant="h5" component="div">
-              {authorBooks.length} Books by {authorDetails.firstName} {authorDetails.lastName}
+                {authorBooks.length} Books by {authorDetails.firstName} {authorDetails.lastName}
               </Typography>
               <ul className="list-none mt-2">
                 {authorBooks.map((book) => (
@@ -85,20 +110,26 @@ const AuthorDetailsPage: FC = () => {
                     <Link href={`/books/${book.id}`}>
                       <a className="text-gray-500 ">{book.name}</a>
                     </Link>
+                    <button className="block mx-auto bg-red-500 text-white py-2 px-4 rounded"
+                    onClick={openModal}
+                    >Supprimer le livre</button>
+                    {isModalOpen && (<ModalDeleteBook onClose={closeModal} onDelete={() => onDeleteBook(book.id)}/>)}
+                    
                   </li>
                 ))}
               </ul>
+              
             </CardContent>
           </Card>
-          <button
-          className="bg-green-400 text-white py-1 px-1 rounded-md m-4"
-          onClick={openCreateModal}
-          >Ajouter un livre </button>
-          { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook}/>)}
         </Grid>
       </Grid>
+      <div className="bg-gray-100 p-4 border border-gray-300 rounded-lg shadow-md text-center">
+  </div>
+  <button className="block mx-auto bg-red-500 text-white py-2 px-4 rounded"
+  onClick={openModal}
+  >Supprimer l'auteur</button>
+  {isModalOpen && (<ModalDeleteAuthor onClose={closeModal} onDelete={onDeleteAuthor}/>)}
     </div>
-   
   );
 };
 
