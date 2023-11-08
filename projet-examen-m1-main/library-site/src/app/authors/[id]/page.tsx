@@ -6,12 +6,29 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainAuthorModel, PlainBookModel } from '../../../models';
 import Link from '@mui/material/Link';
+import ModalAddBookToAuthor from '@/components/ModalAddBookToAuthor';
 
 const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const [authorDetails, setAuthorDetails] = useState<PlainAuthorModel | null>(null);
   const [authorBooks, setAuthorBooks] = useState<PlainBookModel[]>([]);
 
+  // pour afficher/enlever la modale : 
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const openCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const closeCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  // fonction pour ajouter un livre :
+  const Addbook = () =>{
+
+  }
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,9 +90,15 @@ const AuthorDetailsPage: FC = () => {
               </ul>
             </CardContent>
           </Card>
+          <button
+          className="bg-green-400 text-white py-1 px-1 rounded-md m-4"
+          onClick={openCreateModal}
+          >Ajouter un livre </button>
+          { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook}/>)}
         </Grid>
       </Grid>
     </div>
+   
   );
 };
 
