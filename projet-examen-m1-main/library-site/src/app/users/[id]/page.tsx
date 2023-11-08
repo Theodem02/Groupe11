@@ -4,11 +4,31 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainUserModel, PlainBookModel } from '@/models';
 import { useParams } from 'next/navigation';
+import ModalDeleteUser from '@/components/ModalDeleteUser';
 
 const UserDetailsPage: FC = () => {
     const { id } = useParams<{ id: string }>(); // Récupérez l'ID de l'utilisateur à partir de l'URL
     const [userDetails, setUserDetails] = useState<PlainUserModel | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
+    const onDeleteUser = () => {
+        axios.post(`http://localhost:3001/users/delete/${id}`)
+            .then((response) => {
+                closeModal();
+                window.location.href = '/users';
+            })
+            .catch((error) => {
+                console.error('Error deleting user:', error);
+            });
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,6 +59,15 @@ const UserDetailsPage: FC = () => {
                 <ul>
                 </ul>
             </div>
+            <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={openModal}
+            >
+                Supprimer l'utilisateur
+            </button>
+            {isModalOpen && (
+                <ModalDeleteUser onClose={closeModal} onDelete={onDeleteUser} />
+            )}
         </div>
     );
 };

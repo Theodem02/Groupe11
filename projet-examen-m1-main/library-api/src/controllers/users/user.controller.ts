@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common/decorators";
+import { Controller, Get, Param, Post } from "@nestjs/common/decorators";
 import { PlainUserPresenter} from 'library-api/src/controllers/users/user.presenter';
 import { UserId } from 'library-api/src/entities/';
 import { UserModel, PlainUserModel } from 'library-api/src/models';
@@ -20,6 +20,11 @@ export class UserController {
         const user = await this.userUseCases.getById(id);
 
         return PlainUserPresenter.from(user);
+    }
+
+    @Post('/delete/:id')
+    public async deleteUser(@Param('id') id: UserId): Promise<void> {
+        await this.userUseCases.deleteUser(id);
     }
 
 }

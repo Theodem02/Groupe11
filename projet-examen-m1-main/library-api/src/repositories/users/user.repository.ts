@@ -44,4 +44,19 @@ export class UserRepository extends Repository<User> {
             lastName: user.lastName,
         };
     }
+
+    /**
+     * Create a new user
+     * @param userData User's data
+     * @returns Created user
+     * @throws 400: user's data is invalid
+     */
+
+    public async deleteUser(id: UserId): Promise<void> {
+        const user = await this.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundError(`User - '${id}'`);
+        }
+        await this.delete(id);
+    }
 }

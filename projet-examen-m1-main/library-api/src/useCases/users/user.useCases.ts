@@ -24,4 +24,9 @@ export class UserUseCases {
     public async getById(id: UserId): Promise<PlainUserUseCasesOutput> {
         return this.userRepository.getById(id);
     }
+
+    public async deleteUser(id: UserId): Promise<void> {
+        return this.userRepository.deleteUser(id);
+    }
+
 }
