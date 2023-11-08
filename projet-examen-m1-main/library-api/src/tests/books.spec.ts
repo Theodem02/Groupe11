@@ -38,8 +38,11 @@ describe("BookRepository", () => {
         });
     });
 
-    describe("create", () => {
+    describe("create/delete a book", () => {
         it("should create a new book", async () => {
+            //todo
+        });
+        it("should delete a book", async () => {
             //todo
         });
     });
@@ -55,14 +58,13 @@ describe("BookRepository", () => {
         });
     });
 
-    describe("create book genre",() => {
+    describe("create/delete book genre",() => {
         it("should create a new book genre", async () => {
-            const findSpy = jest.spyOn(bookRepository, "findOne").mockResolvedValue(book);
-            //const result = await bookRepository.createBookGenres(book.id, book.bookGenres[0].genreId);
-
-
+           //todo
         });
-
     });
 });
 
+describe("BookUseCases", () => {
+    //todos
+});
