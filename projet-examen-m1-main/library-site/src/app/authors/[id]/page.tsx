@@ -8,14 +8,26 @@ import { PlainAuthorModel, PlainBookModel } from '../../../models';
 import Link from '@mui/material/Link';
 import ModalDeleteBook from '@/components/ModalDeleteBook';
 import ModalDeleteAuthor from '@/components/ModalDeleteAuthor';
+import ModalAddBookToAuthor from '@/components/ModalAddBookToAuthor';
 
 const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const [authorDetails, setAuthorDetails] = useState<PlainAuthorModel | null>(null);
   const [authorBooks, setAuthorBooks] = useState<PlainBookModel[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false) ;
 
-  // gerer les fermetures et ouvertures de la modale :
+  const [isModalOpen, setIsModalOpen] = useState(false) ;
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isModalOpenBook, setIsModalOpenBook] = useState(false) ; 
+    // pour afficher/enlever la modale d'ajout de livre : 
+  
+    const openCreateModal = () => {
+      setShowCreateModal(true);
+    };
+    const closeCreateModal = () => {
+      setShowCreateModal(false);
+    };
+
+  // gerer les fermetures et ouvertures de la modale pour addBook :
 
   const openModal = () =>{
 
@@ -25,6 +37,22 @@ const AuthorDetailsPage: FC = () => {
   const closeModal =()=>{
 
     setIsModalOpen(false);
+  }
+
+  const Addbook= () => {
+    
+  }
+
+  // modale pour supprimer un livre :
+
+  
+  const openModalBook = () =>{
+    setIsModalOpenBook(true);
+  }
+
+  const closeModalBook =()=>{
+
+    setIsModalOpenBook(false);
   }
 
   const onDeleteBook = (bookId: string) => {
@@ -77,7 +105,7 @@ const AuthorDetailsPage: FC = () => {
   }
   console.log(authorDetails);
   console.log(authorBooks); 
-
+  
   return (
     <div className="bg-gray-100 p-4 border border-gray-300 rounded-lg shadow-md text-center">
       <h1 className="text-2xl font-bold mb-2 text-gray-800">Author Details</h1>
@@ -111,9 +139,9 @@ const AuthorDetailsPage: FC = () => {
                       <a className="text-gray-500 ">{book.name}</a>
                     </Link>
                     <button className="block mx-auto bg-red-500 text-white py-2 px-4 rounded"
-                    onClick={openModal}
+                    onClick={openModalBook}
                     >Supprimer le livre</button>
-                    {isModalOpen && (<ModalDeleteBook onClose={closeModal} onDelete={() => onDeleteBook(book.id)}/>)}
+                    {isModalOpenBook && (<ModalDeleteBook onClose={closeModalBook} onDelete={() => onDeleteBook(book.id)}/>)}
                     
                   </li>
                 ))}
@@ -129,6 +157,13 @@ const AuthorDetailsPage: FC = () => {
   onClick={openModal}
   >Supprimer l'auteur</button>
   {isModalOpen && (<ModalDeleteAuthor onClose={closeModal} onDelete={onDeleteAuthor}/>)}
+
+   <button
+          className="bg-green-400 text-white py-1 px-1 rounded-md m-4"
+          onClick={openCreateModal}
+          >Ajouter un livre </button>
+          { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook} books={authorBooks}/>
+          )}
     </div>
   );
 };
