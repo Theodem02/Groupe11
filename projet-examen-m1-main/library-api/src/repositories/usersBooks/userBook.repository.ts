@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'library-api/src/common/errors';
-import { UserBook, UserBookId } from 'library-api/src/entities';
+import { NotFoundError } from '../../common/errors';
+import { UserBook, UserBookId } from '../../entities';
 import {
   UserBookRepositoryOutput,
   PlainUserBookRepositoryOutput,
@@ -18,7 +18,7 @@ export class UserBookRepository extends Repository<UserBook> {
         const usersBooks = await this.find({
             relations: { user: true, book: true },
         });
-    
+
         return usersBooks.map((userBook) => ({
             id: userBook.id,
             user: {
