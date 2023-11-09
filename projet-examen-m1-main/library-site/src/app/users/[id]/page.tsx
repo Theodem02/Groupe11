@@ -1,24 +1,29 @@
 'use client';
 
+// Importez les dépendances nécessaires
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { PlainUserModel, PlainBookModel } from '@/models';
+import { PlainUserBooksModel } from '@/models';
 import { useParams } from 'next/navigation';
 import ModalDeleteUser from '@/components/ModalDeleteUser';
 
+// Définissez le composant UserDetailsPage
 const UserDetailsPage: FC = () => {
-    const { id } = useParams<{ id: string }>(); // Récupérez l'ID de l'utilisateur à partir de l'URL
-    const [userDetails, setUserDetails] = useState<PlainUserModel | null>(null);
+    const { id } = useParams<{ id: string }>();
+    const [userBooks, setUserBooks] = useState<PlainUserBooksModel[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Fonction pour ouvrir la modal de suppression
     const openModal = () => {
         setIsModalOpen(true);
     }
 
+    // Fonction pour fermer la modal
     const closeModal = () => {
         setIsModalOpen(false);
     }
 
+    // Fonction pour supprimer l'utilisateur
     const onDeleteUser = () => {
         axios.post(`http://localhost:3001/users/delete/${id}`)
             .then((response) => {
@@ -29,34 +34,49 @@ const UserDetailsPage: FC = () => {
                 console.error('Error deleting user:', error);
             });
     }
+
+    // Effet pour récupérer les livres loués par l'utilisateur
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserBooks = async () => {
             try {
-                // Récupérer les détails de l'utilisateur en utilisant l'ID de l'utilisateur
-                const userResponse = await axios.get<PlainUserModel>(`http://localhost:3001/users/${id}`);
-                setUserDetails(userResponse.data);
+                // Récupérer les livres loués par l'utilisateur à partir de localhost:3001/usersBooks
+                const userBooksResponse = await axios.get<PlainUserBooksModel[]>('http://localhost:3001/usersBooks');
+                // Filtrer les livres pour ceux qui appartiennent à l'utilisateur avec l'ID correspondant
+                const booksForUser = userBooksResponse.data.filter(userBook => userBook.user.id === id);
+                setUserBooks(booksForUser);
             } catch (error) {
-                console.error('Erreur lors de la récupération des données :', error);
+                console.error('Erreur lors de la récupération des livres :', error);
             }
         };
 
         if (id) {
-            fetchData();
+            fetchUserBooks();
         }
     }, [id]);
 
-    if (!userDetails) {
+    // Affichage conditionnel en attendant le chargement des données
+    if (!userBooks) {
         return <p>Loading...</p>;
     }
+
+    // Si userBooks est un tableau vide
+    if (userBooks.length === 0) {
+        return <p>Aucun livre loué par cet utilisateur.</p>;
+    }
+
+    // Rendu de la page avec les livres loués par l'utilisateur
     return (
         <div className="bg-gray-100 p-4 border border-gray-300 rounded-lg shadow-md text-center">
             <h1 className="text-2xl font-bold mb-2 text-gray-800">User Details</h1>
             <div className="p-4 border border-gray-300 rounded-lg text-center">
-                <p className="font-bold">
-                    {userDetails.lastName} {userDetails.firstName}
+                <p>{userBooks.length > 0
+                    ? `Livres loués par ${userBooks[0].user.firstName} ${userBooks[0].user.lastName} :`
+                    : "Aucun livre loué"}
                 </p>
-                <p>Livres loués par l'utilisateur :</p>
                 <ul>
+                    {userBooks.map(userBook => (
+                        <li key={userBook.id}>{userBook.book.name}</li>
+                    ))}
                 </ul>
             </div>
             <button
@@ -72,4 +92,5 @@ const UserDetailsPage: FC = () => {
     );
 };
 
+// Exportez le composant UserDetailsPage
 export default UserDetailsPage;

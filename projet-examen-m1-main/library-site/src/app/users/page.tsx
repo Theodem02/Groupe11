@@ -1,58 +1,92 @@
 'use client';
-
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { PlainUserModel } from '@/models';
+import { PlainUserModel, PlainUserBooksModel } from '@/models'; // Assurez-vous d'importer les types appropriés
 import Link from 'next/link';
 
 const UsersPage: FC = () => {
     const [users, setUsers] = useState<PlainUserModel[]>([]);
+    const [usersBooks, setUsersBooks] = useState<PlainUserBooksModel[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [searchResults, setSearchResults] = useState<PlainUserModel[]>([]);
+    const [bookSearchTerm, setBookSearchTerm] = useState<string>(''); // Nouvel état pour le terme de recherche de livre
 
     useEffect(() => {
-        axios.get('http://localhost:3001/users').then((response) => {
-            if (Array.isArray(response.data)) {
-                const usersData: PlainUserModel[] = response.data;
-                setUsers(usersData);
-            } else {
-                console.error('Les données renvoyées ne sont pas un tableau valide.');
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get<PlainUserModel[]>('http://localhost:3001/users');
+                setUsers(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
             }
-        }).catch((error) => {
-            console.error('Une erreur s\'est produite lors de la récupération des utilisateurs :', error);
-        });
+        };
+
+        const fetchUsersBooks = async () => {
+            try {
+                const response = await axios.get<PlainUserBooksModel[]>('http://localhost:3001/usersBooks');
+                setUsersBooks(response.data);
+            } catch (error) {
+                console.error('Error fetching users books:', error);
+            }
+        };
+
+        fetchUsers();
+        fetchUsersBooks();
     }, []);
 
-    useEffect(() => {
-        const filteredUsers = users.filter((user) =>
-            user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setSearchResults(filteredUsers);
-    }, [searchTerm, users]);
+    const handleUserSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const term = event.target.value.toLowerCase();
+        setSearchTerm(term);
+    };
+
+    const handleBookSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const term = event.target.value.toLowerCase();
+        setBookSearchTerm(term);
+    };
+
+    // Filtrer les utilisateurs en fonction du terme de recherche
+    const filteredUsers = users.filter((user) => {
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        return fullName.includes(searchTerm);
+    });
+
+    // Filtrer les utilisateurs en fonction du livre
+    const usersWithBook = bookSearchTerm
+        ? usersBooks
+            .filter((userBook) => userBook.book.name.toLowerCase().includes(bookSearchTerm))
+            .map((userBook) => userBook.user.id)
+        : users.map((user) => user.id);
+
+    const filteredUsersWithBook = filteredUsers.filter((user) => usersWithBook.includes(user.id));
 
     return (
         <div>
-            <h1 className="text-3xl font-bold w-full flex justify-center">Users</h1>
-
+            {/* Barre de recherche pour les utilisateurs */}
             <input
                 type="text"
                 placeholder="Rechercher un utilisateur"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleUserSearch}
                 className="w-1/4 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 m-4"
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {searchResults.map((user) => (
-                    <Link href={`/users/${user.id}`} key={user.id}>
-                        <div className="p-4 border border-gray-300 rounded-lg text-center">
-                            <p className="font-bold">
-                                {user.lastName} {user.firstName}
-                            </p>
-                        </div>
-                    </Link>
+            {/* Barre de recherche pour les livres */}
+            <input
+                type="text"
+                placeholder="Rechercher un livre"
+                value={bookSearchTerm}
+                onChange={handleBookSearch}
+                className="w-1/4 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 m-4"
+            />
+
+            <ul>
+                {filteredUsersWithBook.map((user) => (
+                    <li key={user.id}>
+                        <Link href={`/users/${user.id}`}>
+                            {user.firstName} {user.lastName}
+                        </Link>
+                    </li>
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };
