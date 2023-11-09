@@ -6,9 +6,13 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { BookGenre } from './BookGenre';
 import { Author } from './Author';
+import { User } from './User';
+import { UserBook } from './UserBook';
 
 export type BookId = string & { __brand: 'Book' };
 
@@ -31,4 +35,8 @@ export class Book extends BaseEntity {
 
   @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
   bookGenres: BookGenre[];
+
+  @OneToMany(() => UserBook, (userbook) => userbook.book)
+  book: User[];
+
 }

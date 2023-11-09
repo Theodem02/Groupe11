@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { UserId } from "../../entities";
 import { UserRepository } from "../../repositories";
 import { UserUseCasesOutput, PlainUserUseCasesOutput } from "./user.useCases.type";
+import { UserModel } from "library-api/src/models";
 
 @Injectable()
 export class UserUseCases {
@@ -28,5 +29,4 @@ export class UserUseCases {
     public async deleteUser(id: UserId): Promise<void> {
         return this.userRepository.deleteUser(id);
     }
-
 }
