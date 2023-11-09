@@ -232,4 +232,52 @@ describe('AuthorController', () => {
       })),
     );
   });
+  it("should return an author by its id", async () => {
+    const author = authorFixture();
+    const getByIdSpy = jest.spyOn(authorUseCases, 'getById').mockResolvedValue({
+      id: author.id,
+      firstName: author.firstName,
+      lastName: author.lastName,
+      photoUrl: author.photoUrl,
+    });
+
+    const result = await authorController.getById(author.id);
+
+    expect(getByIdSpy).toHaveBeenCalledTimes(1);
+    expect(getByIdSpy).toHaveBeenCalledWith(author.id);
+
+    expect(result).toEqual({
+      id: author.id,
+      firstName: author.firstName,
+      lastName: author.lastName,
+      photoUrl: author.photoUrl,
+    });
+  });
+  it("should create a new author", async () => {
+    const author = authorFixture();
+    const createSpy = jest.spyOn(authorUseCases, 'createAuthor').mockResolvedValue(author);
+
+    const result = await authorController.createAuthor(author);
+
+    expect(createSpy).toHaveBeenCalledTimes(1);
+    expect(createSpy).toHaveBeenCalledWith(author);
+
+    expect(result).toEqual({
+        id: author.id,
+        firstName: author.firstName,
+        lastName: author.lastName,
+        photoUrl: author.photoUrl,
+        });
+  });
+  it("should delete an author by its id", async () => {
+    const author = authorFixture();
+    const deleteSpy = jest.spyOn(authorUseCases, 'deleteAuthor').mockResolvedValue();
+
+    const result = await authorController.deleteAuthor(author.id);
+
+    expect(deleteSpy).toHaveBeenCalledTimes(1);
+    expect(deleteSpy).toHaveBeenCalledWith(author.id);
+
+    expect(result).toEqual(undefined);
+  });
 });

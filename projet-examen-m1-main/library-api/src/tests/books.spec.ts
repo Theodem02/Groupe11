@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { booksFixture } from '../fixtures';
 import { BookRepository } from '../repositories/books/book.repository';
 import { BookUseCases } from '../useCases/books/book.useCases';
+import { BookController } from '../controllers/books/book.controller';
 import { Book } from '../entities';
 import { adaptBookEntityToPlainBookModel } from '../repositories/books/book.utils';
 
@@ -98,4 +99,31 @@ describe('BookRepository', () => {
 
 describe('BookUseCases', () => {
   // todos
+});
+
+
+describe('BookController', () => {
+  const dataSource = {
+    createEntityManager: jest.fn(),
+  } as unknown as DataSource;
+
+  const bookRepository = new BookRepository(dataSource);
+  const bookUseCases = new BookUseCases(bookRepository);
+  const bookController = new BookController(bookUseCases);
+
+  /*describe('getAll', () => {
+    it('should return all books', async () => {
+      const books = [booksFixture(), booksFixture(), booksFixture()];
+      const getAllPlainSpy = jest.spyOn(bookUseCases, 'getAllPlain').mockResolvedValue(
+        books.map(adaptBookEntityToPlainBookModel),
+      );
+
+      const result = await bookController.getAll();
+      expect(getAllPlainSpy).toHaveBeenCalledTimes(1);
+      expect(getAllPlainSpy).toHaveBeenCalledWith();
+      expect(result).toEqual(books.map(adaptBookEntityToPlainBookModel));
+    });
+  });
+});*/
+
 });
