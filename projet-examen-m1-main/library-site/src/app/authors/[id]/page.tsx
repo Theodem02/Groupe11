@@ -9,6 +9,7 @@ import Link from '@mui/material/Link';
 import ModalDeleteBook from '@/components/ModalDeleteBook';
 import ModalDeleteAuthor from '@/components/ModalDeleteAuthor';
 import ModalAddBookToAuthor from '@/components/ModalAddBookToAuthor';
+import ModalCreateBookAuthor from '@/components/ModalCreateBookAuthor';
 
 const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
@@ -18,6 +19,11 @@ const AuthorDetailsPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false) ;
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isModalOpenBook, setIsModalOpenBook] = useState(false) ; 
+  const [showCreateModal1, setShowCreateModal1] = useState(false);
+
+  // Liste des genres
+  const [genres, setGenre] = useState<{id: string, name: string}[]>([]); // Liste des genres depuis la base de données
+  
     // pour afficher/enlever la modale d'ajout de livre : 
   
     const openCreateModal = () => {
@@ -25,6 +31,13 @@ const AuthorDetailsPage: FC = () => {
     };
     const closeCreateModal = () => {
       setShowCreateModal(false);
+    };
+
+    const openCreateModal1 = () => {
+      setShowCreateModal1(true);
+    };
+    const closeCreateModal1 = () => {
+      setShowCreateModal1(false);
     };
 
   // gerer les fermetures et ouvertures de la modale pour addBook :
@@ -76,6 +89,20 @@ const AuthorDetailsPage: FC = () => {
         console.error('Error deleting author:', error);
       });
   }
+
+  const CreatebookAuthor = (newBook: PlainBookModel) => {
+    newBook.authorId = authorDetails ? authorDetails.id: "";
+    newBook.author.firstName = authorDetails ? authorDetails.firstName: "";
+    newBook.author.lastName = authorDetails ? authorDetails.lastName: "";
+    newBook.author.id = authorDetails ? authorDetails.id: "";
+    console.log(newBook);
+    
+    
+    axios.post('http://localhost:3001/books', newBook);
+    // Don't forget to close the modal afterward.
+    closeCreateModal();
+    window.location.reload();
+  }
   
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +118,12 @@ const AuthorDetailsPage: FC = () => {
         // Filtrer les livres pour ne garder que ceux de l'auteur actuel
         const authorBooksData = allBooksResponse.data.filter((book) => book.authorId === id);
         setAuthorBooks(authorBooksData);
+
+        // Récupérer la liste des genres
+        axios.get<{id: string, name: string}[]>('http://localhost:3001/genres').then((response) => {
+          const genreData = response.data;
+          setGenre(genreData);
+        });
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
       }
@@ -164,6 +197,13 @@ const AuthorDetailsPage: FC = () => {
           onClick={openCreateModal}
           >Ajouter un livre </button>
           { showCreateModal && ( <ModalAddBookToAuthor onClose={closeCreateModal} onCreateBookToAuthor={Addbook} books={books}/>
+          )}
+  <button
+    className="bg-green-400 text-white py-1 px-1 rounded-md m-4"
+    onClick={openCreateModal1}>
+    Créer un livre
+    </button>
+          { showCreateModal1 && ( <ModalCreateBookAuthor onClose={closeCreateModal1} onCreateBook={CreatebookAuthor} genres={genres}/>
           )}
     </div>
   );
