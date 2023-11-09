@@ -5,7 +5,13 @@ import { GenreRepository } from './genres/genre.repository';
 import { UserRepository } from './users/user.repository';
 import { UserBookRepository } from './usersBooks/userBook.repository';
 
-const repositories = [AuthorRepository, BookRepository, GenreRepository, UserRepository, UserBookRepository];
+const repositories = [
+  AuthorRepository,
+  BookRepository,
+  GenreRepository,
+  UserRepository,
+  UserBookRepository,
+];
 
 @Module({
   providers: [...repositories],

@@ -2,6 +2,7 @@
 
 import { FC, ReactElement } from 'react';
 import NavigationMenu from './NavigationMenu';
+import React from 'react';
 
 
 const Home: FC = (): ReactElement => (

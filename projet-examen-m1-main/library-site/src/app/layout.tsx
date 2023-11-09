@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactElement, ReactNode } from 'react';
 import NavigationMenu from './NavigationMenu';
+import React from 'react';
 
 
 const inter = Inter({ subsets: ['latin'] });

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { PlainAuthorModel } from '@/models';
 import Link from 'next/link';
 import ModalCreateAuthor from '@/components/ModalCreateAuthor';
+import React from 'react';
 
 const AuthorsPage: FC = () => {
   const [authorsWithBookCount, setAuthorsWithBookCount] = useState<PlainAuthorModel[]>([]);

@@ -1,150 +1,182 @@
-//import { NotFoundException } from "@nestjs/common/exceptions";
-import { authorFixture } from "../fixtures/author.fixture";
-import { AuthorRepository } from "../repositories/authors/author.repository";
-import{AuthorUseCases} from "../useCases/authors/author.useCases";
-import {PlainAuthorRepositoryOutput,AuthorRepositoryOutput} from "../repositories/authors/author.repository.type";
-import { DataSource } from "typeorm";
+// import { NotFoundException } from "@nestjs/common/exceptions";
+import { DataSource } from 'typeorm';
+import { authorFixture } from '../fixtures/author.fixture';
+import { AuthorRepository } from '../repositories/authors/author.repository';
+import { AuthorUseCases } from '../useCases/authors/author.useCases';
+import {
+  PlainAuthorRepositoryOutput,
+  AuthorRepositoryOutput,
+} from '../repositories/authors/author.repository.type';
 
-
-
-describe("AuthorRepository", () => {
-  describe("getAllPlain", () => {
-    it("should return all authors", async () => {
+describe('AuthorRepository', () => {
+  describe('getAllPlain', () => {
+    it('should return all authors', async () => {
       const dataSource = {
-        createEntityManager: jest.fn(),}as unknown as DataSource;
+        createEntityManager: jest.fn(),
+      } as unknown as DataSource;
 
-        const authorRepository = new AuthorRepository(dataSource);
-        const authors = [authorFixture(), authorFixture(), authorFixture()];
-        const findSpy = jest.spyOn(authorRepository, "find").mockResolvedValue(authors);
-        const result = await authorRepository.getAllPlain();
+      const authorRepository = new AuthorRepository(dataSource);
+      const authors = [authorFixture(), authorFixture(), authorFixture()];
+      const findSpy = jest
+        .spyOn(authorRepository, 'find')
+        .mockResolvedValue(authors);
+      const result = await authorRepository.getAllPlain();
 
-        expect(findSpy).toHaveBeenCalledTimes(1);
-        expect(findSpy).toHaveBeenCalledWith();
-        expect(result).toEqual(authors.map((author) => ({
+      expect(findSpy).toHaveBeenCalledTimes(1);
+      expect(findSpy).toHaveBeenCalledWith();
+      expect(result).toEqual(
+        authors.map((author) => ({
           id: author.id,
           firstName: author.firstName,
           lastName: author.lastName,
           photoUrl: author.photoUrl,
-        })));
+        })),
+      );
 
-        expect(true).toBeTruthy();
-        expect(null).toBeNull();
-      });
+      expect(true).toBeTruthy();
+      expect(null).toBeNull();
     });
-    describe("getById", () => {
-      it("should return an author by its id", async () => {
-        const dataSource = {
-          createEntityManager: jest.fn(),}as unknown as DataSource;
-
-          const authorRepository = new AuthorRepository(dataSource);
-          const author = authorFixture();
-          const findSpy = jest.spyOn(authorRepository, "findOne").mockResolvedValue(author);
-          const result = await authorRepository.getById(author.id);
-
-          expect(findSpy).toHaveBeenCalledTimes(1);
-          expect(findSpy).toHaveBeenCalledWith({where: {id: author.id}});
-          expect(result).toEqual({
-            id: author.id,
-            firstName: author.firstName,
-            lastName: author.lastName,
-            photoUrl: author.photoUrl,
-          });
-      });
   });
-    describe('createAuthor', () => {
-      it('should create a new author', async () => {
-        const dataSource = {
-          createEntityManager: jest.fn(),}as unknown as DataSource;
+  describe('getById', () => {
+    it('should return an author by its id', async () => {
+      const dataSource = {
+        createEntityManager: jest.fn(),
+      } as unknown as DataSource;
 
-          const authorRepository = new AuthorRepository(dataSource);
-          const author = authorFixture();
-          const createSpy = jest.spyOn(authorRepository, 'create').mockReturnValue(author);
-          const saveSpy = jest.spyOn(authorRepository, 'save').mockResolvedValue(author);
-          const result = await authorRepository.createAuthor(author);
-
-          expect(createSpy).toHaveBeenCalledTimes(1);
-          expect(createSpy).toHaveBeenCalledWith(author);
-          expect(saveSpy).toHaveBeenCalledTimes(1);
-          expect(saveSpy).toHaveBeenCalledWith(author);
-          expect(result).toEqual(author);
-      });
-    });
-});
-
-
-describe("AuthorUseCases", () => {
-  describe("getAllPlain", () => {
-    it("should return all authors", async () => {
-      const dataSource = {createEntityManager: jest.fn(),}as unknown as DataSource;
       const authorRepository = new AuthorRepository(dataSource);
-      const authorUseCases = new AuthorUseCases(authorRepository);
-      const authors = [authorFixture(), authorFixture(), authorFixture()];
+      const author = authorFixture();
+      const findSpy = jest
+        .spyOn(authorRepository, 'findOne')
+        .mockResolvedValue(author);
+      const result = await authorRepository.getById(author.id);
 
-      const getAllPlainSpy = jest.spyOn(authorRepository, "getAllPlain").mockResolvedValue(authors.map((author) => ({
+      expect(findSpy).toHaveBeenCalledTimes(1);
+      expect(findSpy).toHaveBeenCalledWith({ where: { id: author.id } });
+      expect(result).toEqual({
         id: author.id,
         firstName: author.firstName,
         lastName: author.lastName,
         photoUrl: author.photoUrl,
-      })));
+      });
+    });
+  });
+  describe('createAuthor', () => {
+    it('should create a new author', async () => {
+      const dataSource = {
+        createEntityManager: jest.fn(),
+      } as unknown as DataSource;
+
+      const authorRepository = new AuthorRepository(dataSource);
+      const author = authorFixture();
+      const createSpy = jest
+        .spyOn(authorRepository, 'create')
+        .mockReturnValue(author);
+      const saveSpy = jest
+        .spyOn(authorRepository, 'save')
+        .mockResolvedValue(author);
+      const result = await authorRepository.createAuthor(author);
+
+      expect(createSpy).toHaveBeenCalledTimes(1);
+      expect(createSpy).toHaveBeenCalledWith(author);
+      expect(saveSpy).toHaveBeenCalledTimes(1);
+      expect(saveSpy).toHaveBeenCalledWith(author);
+      expect(result).toEqual(author);
+    });
+  });
+});
+
+describe('AuthorUseCases', () => {
+  describe('getAllPlain', () => {
+    it('should return all authors', async () => {
+      const dataSource = {
+        createEntityManager: jest.fn(),
+      } as unknown as DataSource;
+      const authorRepository = new AuthorRepository(dataSource);
+      const authorUseCases = new AuthorUseCases(authorRepository);
+      const authors = [authorFixture(), authorFixture(), authorFixture()];
+
+      const getAllPlainSpy = jest
+        .spyOn(authorRepository, 'getAllPlain')
+        .mockResolvedValue(
+          authors.map((author) => ({
+            id: author.id,
+            firstName: author.firstName,
+            lastName: author.lastName,
+            photoUrl: author.photoUrl,
+          })),
+        );
 
       const result = await authorUseCases.getAllPlain();
 
       expect(getAllPlainSpy).toHaveBeenCalledTimes(1);
       expect(getAllPlainSpy).toHaveBeenCalledWith();
-      expect(result).toEqual(authors.map((author) => ({
-        id: author.id,
-        firstName: author.firstName,
-        lastName: author.lastName,
-        photoUrl: author.photoUrl,
-      })));
+      expect(result).toEqual(
+        authors.map((author) => ({
+          id: author.id,
+          firstName: author.firstName,
+          lastName: author.lastName,
+          photoUrl: author.photoUrl,
+        })),
+      );
     });
-    describe("getById", () => {
-      //import { NotFoundException } from "@nestjs/common/exceptions";
+    describe('getById', () => {
+      // import { NotFoundException } from "@nestjs/common/exceptions";
 
+      describe('AuthorRepository', () => {});
 
-      describe("AuthorRepository", () => {});
-
-      describe("AuthorUseCases", () => {
-        describe("getAllPlain", () => {
-          it("should return all authors", async () => {
-            const dataSource = { createEntityManager: jest.fn() } as unknown as DataSource;
+      describe('AuthorUseCases', () => {
+        describe('getAllPlain', () => {
+          it('should return all authors', async () => {
+            const dataSource = {
+              createEntityManager: jest.fn(),
+            } as unknown as DataSource;
             const authorRepository = new AuthorRepository(dataSource);
             const authorUseCases = new AuthorUseCases(authorRepository);
             const authors = [authorFixture(), authorFixture(), authorFixture()];
 
-            const getAllPlainSpy = jest.spyOn(authorRepository, "getAllPlain").mockResolvedValue(authors.map((author) => ({
-              id: author.id,
-              firstName: author.firstName,
-              lastName: author.lastName,
-              photoUrl: author.photoUrl,
-            })));
+            const getAllPlainSpy = jest
+              .spyOn(authorRepository, 'getAllPlain')
+              .mockResolvedValue(
+                authors.map((author) => ({
+                  id: author.id,
+                  firstName: author.firstName,
+                  lastName: author.lastName,
+                  photoUrl: author.photoUrl,
+                })),
+              );
 
             const result = await authorUseCases.getAllPlain();
 
             expect(getAllPlainSpy).toHaveBeenCalledTimes(1);
             expect(getAllPlainSpy).toHaveBeenCalledWith();
-            expect(result).toEqual(authors.map((author) => ({
-              id: author.id,
-              firstName: author.firstName,
-              lastName: author.lastName,
-              photoUrl: author.photoUrl,
-            })));
+            expect(result).toEqual(
+              authors.map((author) => ({
+                id: author.id,
+                firstName: author.firstName,
+                lastName: author.lastName,
+                photoUrl: author.photoUrl,
+              })),
+            );
           });
         });
 
-        describe("getById", () => {
-          it("should return an author by its id", async () => {
-            const dataSource = { createEntityManager: jest.fn() } as unknown as DataSource;
+        describe('getById', () => {
+          it('should return an author by its id', async () => {
+            const dataSource = {
+              createEntityManager: jest.fn(),
+            } as unknown as DataSource;
             const authorRepository = new AuthorRepository(dataSource);
             const authorUseCases = new AuthorUseCases(authorRepository);
             const author = authorFixture();
 
-            const getByIdSpy = jest.spyOn(authorRepository, 'getById').mockResolvedValue({
-              id: author.id,
-              firstName: author.firstName,
-              lastName: author.lastName,
-              photoUrl: author.photoUrl
-            });
+            const getByIdSpy = jest
+              .spyOn(authorRepository, 'getById')
+              .mockResolvedValue({
+                id: author.id,
+                firstName: author.firstName,
+                lastName: author.lastName,
+                photoUrl: author.photoUrl,
+              });
 
             const result = await authorUseCases.getById(author.id);
 
@@ -155,7 +187,7 @@ describe("AuthorUseCases", () => {
               id: author.id,
               firstName: author.firstName,
               lastName: author.lastName,
-              photoUrl: author.photoUrl
+              photoUrl: author.photoUrl,
             });
           });
         });
@@ -163,5 +195,3 @@ describe("AuthorUseCases", () => {
     });
   });
 });
-
-

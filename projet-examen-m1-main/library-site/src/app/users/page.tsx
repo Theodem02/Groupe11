@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainUserModel, PlainUserBooksModel } from '@/models'; // Assurez-vous d'importer les types appropriés
 import Link from 'next/link';
+import React from 'react';
+
 
 const UsersPage: FC = () => {
     const [users, setUsers] = useState<PlainUserModel[]>([]);

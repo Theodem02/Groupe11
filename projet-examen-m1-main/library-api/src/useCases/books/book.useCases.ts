@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { BookId } from '../../entities';
+import { BookId, Genre } from '../../entities';
 import { BookRepository } from '../../repositories';
-import { Genre } from '../../entities';
+
 import {
   BookUseCasesOutput,
   PlainBookUseCasesOutput,
@@ -25,8 +25,10 @@ export class BookUseCases {
    * @param authorId Author's ID
    * @returns Array of plain books belonging to the author
    */
-  public async getBooksByAuthorId(authorId: string): Promise<PlainBookUseCasesOutput[]> {
-    const books: PlainBookModel[] = await this.bookRepository.getBooksByAuthorId(authorId);
+  public async getBooksByAuthorId(
+    authorId: string,
+  ): Promise<PlainBookUseCasesOutput[]> {
+    const books: PlainBookModel[] =      await this.bookRepository.getBooksByAuthorId(authorId);
     return books;
   }
 
@@ -46,7 +48,9 @@ export class BookUseCases {
    * @returns Created book
    * @throws 400: invalid data
    */
-  public async createBook(bookData: BookUseCasesOutput): Promise<BookUseCasesOutput> {
+  public async createBook(
+    bookData: BookUseCasesOutput,
+  ): Promise<BookUseCasesOutput> {
     return this.bookRepository.createBook(bookData);
   }
 
@@ -56,7 +60,10 @@ export class BookUseCases {
    * @param genreId Genre's ID
    * @returns Updated book
    */
-  public async createBookGenres(bookId: BookId, genre: Genre): Promise<BookUseCasesOutput> {
+  public async createBookGenres(
+    bookId: BookId,
+    genre: Genre,
+  ): Promise<BookUseCasesOutput> {
     return this.bookRepository.createBookGenres(bookId, genre);
   }
 

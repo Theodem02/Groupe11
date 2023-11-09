@@ -34,7 +34,9 @@ export class AuthorUseCases {
    * @returns Created author
    * @throws 400: author's data is invalid
    */
-  public async createAuthor(authorData: AuthorUseCasesOutput): Promise<AuthorUseCasesOutput> {
+  public async createAuthor(
+    authorData: AuthorUseCasesOutput,
+  ): Promise<AuthorUseCasesOutput> {
     return this.authorRepository.createAuthor(authorData);
   }
 

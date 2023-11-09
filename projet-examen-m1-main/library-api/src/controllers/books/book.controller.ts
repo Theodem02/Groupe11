@@ -1,11 +1,8 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import {
-  BookPresenter,
-  PlainBookPresenter,
-} from './book.presenter';
-import { BookId } from '../../entities';
+import { BookPresenter, PlainBookPresenter } from './book.presenter';
+import { BookId, Genre, GenreId } from '../../entities';
 import { BookModel, PlainBookModel } from '../../models';
-import { Genre, GenreId } from '../../entities';
+
 import { BookUseCases } from '../../useCases';
 
 @Controller('books')
@@ -19,7 +16,9 @@ export class BookController {
   }
 
   @Get('/author/:authorId') // Nouvel endpoint pour récupérer les livres par l'ID de l'auteur
-  public async getBooksByAuthorId(@Param('authorId') authorId: string): Promise<PlainBookPresenter[]> {
+  public async getBooksByAuthorId(
+    @Param('authorId') authorId: string,
+  ): Promise<PlainBookPresenter[]> {
     const books = await this.bookUseCases.getBooksByAuthorId(authorId);
     return books.map(PlainBookPresenter.from);
   }
@@ -31,7 +30,9 @@ export class BookController {
   }
 
   @Post('/')
-  public async createBook(@Body() bookData: BookModel): Promise<PlainBookModel> {
+  public async createBook(
+    @Body() bookData: BookModel,
+  ): Promise<PlainBookModel> {
     const newBook = await this.bookUseCases.createBook(bookData);
 
     const newGenre = new Genre();

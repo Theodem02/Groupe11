@@ -72,6 +72,7 @@ const ModalCreateBook: React.FC<ModalCreateBookProps> = ({ onClose, onCreateBook
     
     const { name, writtenOn, authorId } = bookData;
 
+    // Erreur parce qu'il manque le parammètre id, cependant si on le mets il n'est pas généré automatiquement
     onCreateBook(bookData);
     onClose();
   };

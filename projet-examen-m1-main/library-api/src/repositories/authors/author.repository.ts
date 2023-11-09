@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from '../../common/errors';
-import { Author, AuthorId } from '../../entities';
 import {
   PlainAuthorRepositoryOutput,
   AuthorRepositoryOutput,
 } from 'library-api/src/repositories/authors/author.repository.type';
 import { DataSource, Repository } from 'typeorm';
+import { NotFoundError } from '../../common/errors';
+import { Author, AuthorId } from '../../entities';
 
 @Injectable()
 export class AuthorRepository extends Repository<Author> {
@@ -19,7 +19,7 @@ export class AuthorRepository extends Repository<Author> {
    */
   public async getAllPlain(): Promise<PlainAuthorRepositoryOutput[]> {
     const authors = await this.find();
-    return authors.map(author => ({
+    return authors.map((author) => ({
       id: author.id,
       firstName: author.firstName,
       lastName: author.lastName,
@@ -54,7 +54,9 @@ export class AuthorRepository extends Repository<Author> {
    * @returns Created author
    * @throws 400: author's data is invalid
    */
-  public async createAuthor(authorData: AuthorRepositoryOutput): Promise<AuthorRepositoryOutput> {
+  public async createAuthor(
+    authorData: AuthorRepositoryOutput,
+  ): Promise<AuthorRepositoryOutput> {
     const author = this.create(authorData);
     await this.save(author);
 

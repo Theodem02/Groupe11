@@ -18,8 +18,6 @@ export class PlainGenrePresenter {
   }
 }
 
-
-
 export class GenrePresenter {
   id: GenreId;
 

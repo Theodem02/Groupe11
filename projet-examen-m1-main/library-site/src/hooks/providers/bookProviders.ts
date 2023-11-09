@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { PlainBookModel } from '@/models';
+import { PlainBookModel } from '@/models/';
 
 type UseListBooksProvider = {
   books: PlainBookModel[];

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { PlainUserBooksModel } from '@/models';
 import { useParams } from 'next/navigation';
 import ModalDeleteUser from '@/components/ModalDeleteUser';
+import React from 'react';
 
 // Définissez le composant UserDetailsPage
 const UserDetailsPage: FC = () => {

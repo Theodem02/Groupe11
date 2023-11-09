@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { PlainBookModel } from '../../../models/book.model';
 import ModalDeleteBook from '@/components/ModalDeleteBook';
+import React from 'react';
 
 const BooksDetailsPage: FC = () => {
   const { id } = useParams();

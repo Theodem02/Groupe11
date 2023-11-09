@@ -1,2 +1,1 @@
-export * from './books.fixtures'
-
+export * from './books.fixtures';

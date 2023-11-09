@@ -19,7 +19,7 @@ export type BookId = string & { __brand: 'Book' };
 @Entity('Books')
 export class Book extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: BookId; 
+  id: BookId;
 
   @Column()
   name: string;
@@ -38,5 +38,4 @@ export class Book extends BaseEntity {
 
   @OneToMany(() => UserBook, (userbook) => userbook.book)
   book: User[];
-
 }

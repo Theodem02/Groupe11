@@ -1,9 +1,9 @@
-import { Author } from '../entities/Author';
-import { Book } from '../entities/Book';
-import { BookGenre } from '../entities/BookGenre';
-import { Genre } from '../entities/Genre';
-import { User } from '../entities/User';
-import { UserBook } from '../entities/UserBook';
+import { Author } from './Author';
+import { Book } from './Book';
+import { BookGenre } from './BookGenre';
+import { Genre } from './Genre';
+import { User } from './User';
+import { UserBook } from './UserBook';
 
 export * from './Author';
 // eslint-disable-next-line import/no-cycle

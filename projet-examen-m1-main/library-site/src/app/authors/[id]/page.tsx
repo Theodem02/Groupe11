@@ -10,6 +10,7 @@ import ModalDeleteBook from '@/components/ModalDeleteBook';
 import ModalDeleteAuthor from '@/components/ModalDeleteAuthor';
 import ModalAddBookToAuthor from '@/components/ModalAddBookToAuthor';
 import ModalCreateBookAuthor from '@/components/ModalCreateBookAuthor';
+import React from 'react';
 
 const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
