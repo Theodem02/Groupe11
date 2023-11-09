@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserBookId } from 'library-api/src/entities';
-import { UserBookRepository } from 'library-api/src/repositories';
-import { PlainUserBookUseCasesOutput } from 'library-api/src/useCases/usersBooks/userBook.useCases.type';
-import { PlainUserBookModel } from 'library-api/src/models';
+import { UserBookId } from '../../entities';
+import { UserBookRepository } from '../../repositories';
+import { PlainUserBookUseCasesOutput } from '../usersBooks/userBook.useCases.type';
+import { PlainUserBookModel } from '../../models';
 
 @Injectable()
 export class UserBookUseCases {

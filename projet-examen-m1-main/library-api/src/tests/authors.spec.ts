@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { authorFixture } from '../fixtures/author.fixture';
 import { AuthorRepository } from '../repositories/authors/author.repository';
 import { AuthorUseCases } from '../useCases/authors/author.useCases';
+import { AuthorController } from '../controllers/authors/author.controller';
 import {
   PlainAuthorRepositoryOutput,
   AuthorRepositoryOutput,
@@ -122,7 +123,6 @@ describe('AuthorUseCases', () => {
     describe('getById', () => {
       // import { NotFoundException } from "@nestjs/common/exceptions";
 
-      describe('AuthorRepository', () => {});
 
       describe('AuthorUseCases', () => {
         describe('getAllPlain', () => {
@@ -193,5 +193,43 @@ describe('AuthorUseCases', () => {
         });
       });
     });
+  });
+});
+
+
+describe('AuthorController', () => {
+  const dataSource = {
+    createEntityManager: jest.fn(),
+  } as unknown as DataSource;
+
+  const authorRepository = new AuthorRepository(dataSource);
+  const authorUseCases = new AuthorUseCases(authorRepository);
+  const authorController = new AuthorController(authorUseCases);
+
+
+
+  it('should return all authors', async () => {
+    const authors = [authorFixture(), authorFixture(), authorFixture()];
+    const getAllPlainSpy = jest.spyOn(authorUseCases, 'getAllPlain').mockResolvedValue(
+      authors.map((author) => ({
+        id: author.id,
+        firstName: author.firstName,
+        lastName: author.lastName,
+        photoUrl: author.photoUrl,
+      })),
+    );
+
+    const result = await authorController.getAll();
+
+    expect(getAllPlainSpy).toHaveBeenCalledTimes(1);
+    expect(getAllPlainSpy).toHaveBeenCalledWith();
+    expect(result).toEqual(
+      authors.map((author) => ({
+        id: author.id,
+        firstName: author.firstName,
+        lastName: author.lastName,
+        photoUrl: author.photoUrl,
+      })),
+    );
   });
 });

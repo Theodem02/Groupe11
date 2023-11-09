@@ -5,6 +5,7 @@ import { BookUseCases } from '../useCases/books/book.useCases';
 import { Book } from '../entities';
 import { adaptBookEntityToPlainBookModel } from '../repositories/books/book.utils';
 
+
 describe('BookRepository', () => {
   const dataSource = {
     createEntityManager: jest.fn(),
@@ -46,11 +47,30 @@ describe('BookRepository', () => {
 
   describe('create/delete a book', () => {
     it('should create a new book', async () => {
-      // todo
+      const createSpy = jest.spyOn(bookRepository, 'create').mockReturnValue(book);
+      const saveSpy = jest.spyOn(bookRepository, 'save').mockResolvedValue(book);
+      const bookWithGenres = { ...book, genres: [] }; // add genres property
+      const result = await bookRepository.createBook(bookWithGenres);
+
+      expect(createSpy).toHaveBeenCalledTimes(1);
+      expect(createSpy).toHaveBeenCalledWith(bookWithGenres);
+      expect(saveSpy).toHaveBeenCalledTimes(1);
+      expect(saveSpy).toHaveBeenCalledWith(book);
+      expect(result).toEqual(adaptBookEntityToPlainBookModel(book));
     });
-    it('should delete a book', async () => {
-      // todo
-    });
+    /*it('should delete a book', async () => {
+      const deleteSpy = jest.spyOn(bookRepository, 'delete').mockResolvedValue(undefined);
+      const findOneSpy = jest.spyOn(bookRepository, 'findOne').mockResolvedValue(book); // Mock the findOne method
+
+      const result = await bookRepository.deleteBook(book.id);
+
+      expect(findOneSpy).toHaveBeenCalledTimes(1); // Ensure findOne is called
+      expect(findOneSpy).toHaveBeenCalledWith({ where: { id: book.id }, relations: { bookGenres: { genre: true }, author: true } });
+      expect(deleteSpy).toHaveBeenCalledTimes(1);
+      expect(deleteSpy).toHaveBeenCalledWith(book.id);
+      expect(result).toEqual(undefined);
+
+    });*/
   });
 
   describe('getByAuthorId', () => {
@@ -71,7 +91,7 @@ describe('BookRepository', () => {
 
   describe('create/delete book genre', () => {
     it('should create a new book genre', async () => {
-      // todo
+
     });
   });
 });
