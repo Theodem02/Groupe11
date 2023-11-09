@@ -38,4 +38,16 @@ export class UserBookRepository extends Repository<UserBook> {
       },
     }));
   }
+  /**
+     * Delete a userBook
+     * @param id
+     */
+
+  public async deleteBook(id: UserBookId): Promise<void> {
+    const userBook = await this.findOne({where: { id }});
+    if (!userBook) {
+        throw new NotFoundError(`UserBook with id ${id} not found`);
+    }
+    await this.delete(id);
+  }
 }

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { PlainUserBooksModel } from '@/models';
 import { useParams } from 'next/navigation';
 import ModalDeleteUser from '@/components/ModalDeleteUser';
+import ModalDeleteBookRent from '@/components/ModalDeleteBookRent';
 import React from 'react';
 
 // Définissez le composant UserDetailsPage
@@ -13,6 +14,9 @@ const UserDetailsPage: FC = () => {
     const { id } = useParams<{ id: string }>();
     const [userBooks, setUserBooks] = useState<PlainUserBooksModel[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenBook, setIsModalOpenBook] = useState(false);
+    const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
+
 
     // Fonction pour ouvrir la modal de suppression
     const openModal = () => {
@@ -24,6 +28,17 @@ const UserDetailsPage: FC = () => {
         setIsModalOpen(false);
     }
 
+    const openModalBook = (bookId: number) => {
+        setSelectedBookId(bookId);
+        setIsModalOpenBook(true);
+    }
+
+    const closeModalBook = () => {
+        setSelectedBookId(null);
+        setIsModalOpenBook(false);
+    }
+
+
     // Fonction pour supprimer l'utilisateur
     const onDeleteUser = () => {
         axios.post(`http://localhost:3001/users/delete/${id}`)
@@ -34,6 +49,20 @@ const UserDetailsPage: FC = () => {
             .catch((error) => {
                 console.error('Error deleting user:', error);
             });
+    }
+
+    // Fonction pour supprimer le livre loué
+    const onDeleteBook = () => {
+        if (selectedBookId) {
+            axios.post(`http://localhost:3001/usersBooks/delete/${selectedBookId}`)
+                .then((response) => {
+                    closeModalBook();
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Error deleting book:', error);
+                });
+        }
     }
 
     // Effet pour récupérer les livres loués par l'utilisateur
@@ -76,7 +105,13 @@ const UserDetailsPage: FC = () => {
                 </p>
                 <ul>
                     {userBooks.map(userBook => (
-                        <li key={userBook.id}>{userBook.book.name}</li>
+                        <li key={userBook.id}>{userBook.book.name}
+                        <button className="block mx-auto bg-red-500 text-white py-2 px-4 rounded"
+                        onClick={() => openModalBook(parseInt(userBook.id))}
+                        >Supprimer le livre</button>
+                        {isModalOpenBook && (<ModalDeleteBookRent onClose={closeModalBook} onDelete={onDeleteBook}/>)}
+                        </li>
+                        
                     ))}
                 </ul>
             </div>

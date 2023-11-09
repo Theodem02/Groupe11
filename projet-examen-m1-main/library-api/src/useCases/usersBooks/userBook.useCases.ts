@@ -15,4 +15,8 @@ export class UserBookUseCases {
   public async getAllPlain(): Promise<PlainUserBookUseCasesOutput[]> {
     return this.userBookRepository.getAllPlain();
   }
+
+  public async deleteBook(id: UserBookId): Promise<void> {
+    return this.userBookRepository.deleteBook(id);
+  }
 }
