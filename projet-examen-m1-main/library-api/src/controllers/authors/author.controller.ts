@@ -35,7 +35,16 @@ export class AuthorController {
   }
 
   @Post('/')
-  @ApiBody({  description: 'Data to create a new author' })
+  @ApiBody({
+    description: 'Data to create a new author',
+    schema: {
+      example: {
+        firstName: 'John',
+        lastName: 'Doe',
+        photoUrl: 'https://example.com/photo.jpg',
+      },
+    },
+  })
   @ApiResponse({
     status: 201,
     description: 'Author created successfully',
