@@ -2,12 +2,12 @@ import { Controller, Get, Param } from '@nestjs/common';
 import {
   GenrePresenter,
   PlainGenrePresenter,
-} from 'library-api/src/controllers/genres/genre.presenter';
-import { GenreUseCases } from 'library-api/src/useCases';
+} from './genre.presenter';
+import { GenreUseCases } from '../../useCases';
 import {
   GenreModel,
   PlainGenreModel,
-} from 'library-api/src/models/genre.model';
+} from '../../models/genre.model';
 
 @Controller('genres')
 export class GenreController {

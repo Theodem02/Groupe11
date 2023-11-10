@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post } from '@nestjs/common/decorators';
-import { PlainUserPresenter } from 'library-api/src/controllers/users/user.presenter';
-import { UserId } from 'library-api/src/entities/';
-import { UserModel, PlainUserModel } from 'library-api/src/models';
-import { UserUseCases } from 'library-api/src/useCases';
+import { PlainUserPresenter } from './user.presenter';
+import { UserId } from '../../entities/';
+import { UserModel, PlainUserModel } from '../../models';
+import { UserUseCases } from '../../useCases';
 
 @Controller('users')
 export class UserController {
