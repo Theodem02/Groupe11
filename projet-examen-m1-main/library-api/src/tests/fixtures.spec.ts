@@ -1,6 +1,8 @@
 import { authorFixture } from '../fixtures/author.fixture';
 import { booksFixture } from '../fixtures';
 import { genreFixture } from '../fixtures/genre.fixture';
+import { userFixture } from '../fixtures/user.fixture';
+import { userBookFixture } from '../fixtures/userBook.fixture';
 
 // test the author fixture properties
 describe('authorFixture', () => {
@@ -29,4 +31,22 @@ describe('authorFixture', () => {
     expect(genre).toHaveProperty('name');
     expect(genre).toHaveProperty('bookGenres');
   });
+
+  it('should return a user', () => {
+    const user = userFixture();
+    expect(user).toHaveProperty('id');
+    expect(user).toHaveProperty('firstName');
+    expect(user).toHaveProperty('lastName');
+    expect(user).toHaveProperty('user');
+  });
+
+  it('should return a userBook', () => {
+    const userBook = userBookFixture();
+    expect(userBook).toHaveProperty('id');
+    expect(userBook).toHaveProperty('userId');
+    expect(userBook).toHaveProperty('bookId');
+    expect(userBook).toHaveProperty('user');
+    expect(userBook).toHaveProperty('book');
+  });
 });
+

@@ -4,6 +4,9 @@ import { authorFixture } from '../fixtures/author.fixture';
 import { AuthorRepository } from '../repositories/authors/author.repository';
 import { AuthorUseCases } from '../useCases/authors/author.useCases';
 import { AuthorController } from '../controllers/authors/author.controller';
+import { PlainAuthorModel } from '../models/author.model';
+
+
 import {
   PlainAuthorRepositoryOutput,
   AuthorRepositoryOutput,
@@ -280,4 +283,12 @@ describe('AuthorController', () => {
 
     expect(result).toEqual(undefined);
   });
+});
+
+
+
+
+
+describe('Author Models', () => {
+
 });
