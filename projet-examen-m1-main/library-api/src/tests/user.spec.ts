@@ -4,6 +4,8 @@ import {DataSource} from 'typeorm';
 import {userFixture} from '../fixtures/user.fixture';
 import {UserRepository} from '../repositories/users/user.repository';
 import {UserUseCases} from '../useCases/users/user.useCases';
+import {UserController} from '../controllers/users/user.controller';
+import{PlainUserPresenter} from '../controllers/users/user.presenter';
 import {PlainUserRepositoryOutput, UserRepositoryOutput} from '../repositories/users/user.repository.type';
 
 describe('UserRepository', () => {
@@ -80,3 +82,32 @@ describe('UserRepository', () => {
         });
     });*/
 });
+
+
+describe('userController', () => {
+    const dataSource = {
+        createEntityManager: jest.fn(),
+    } as unknown as DataSource;
+    const userRepository = new UserRepository(dataSource);
+    const userUseCases = new UserUseCases(userRepository);
+    const userController = new UserController(userUseCases);
+    const users = [userFixture(), userFixture(), userFixture()];
+
+    it('should return all users', async () => {
+        const findSpy = jest
+            .spyOn(userRepository, 'find')
+            .mockResolvedValue(users);
+        const result = await userController.getAll();
+
+        expect(findSpy).toHaveBeenCalledTimes(1);
+        expect(findSpy).toHaveBeenCalledWith();
+
+        // Use map to apply PlainUserPresenter.from to each element in the result array
+        const expectedArray = users.map(PlainUserPresenter.from);
+
+        expect(result).toEqual(expectedArray);
+    });
+});
+
+
+

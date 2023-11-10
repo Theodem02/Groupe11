@@ -5,6 +5,7 @@ import { BookUseCases } from '../useCases/books/book.useCases';
 import { BookController } from '../controllers/books/book.controller';
 import { Book } from '../entities';
 import { adaptBookEntityToPlainBookModel } from '../repositories/books/book.utils';
+import { PlainBookPresenter } from '../controllers/books/book.presenter';
 
 
 describe('BookRepository', () => {
@@ -114,16 +115,16 @@ describe('BookController', () => {
   /*describe('getAll', () => {
     it('should return all books', async () => {
       const books = [booksFixture(), booksFixture(), booksFixture()];
-      const getAllPlainSpy = jest.spyOn(bookUseCases, 'getAllPlain').mockResolvedValue(
-        books.map(adaptBookEntityToPlainBookModel),
-      );
+
+      const getAllPlainSpy = jest
+        .spyOn(bookRepository, 'getAllPlain')
+        .mockResolvedValue(books.map(adaptBookEntityToPlainBookModel));
 
       const result = await bookController.getAll();
       expect(getAllPlainSpy).toHaveBeenCalledTimes(1);
       expect(getAllPlainSpy).toHaveBeenCalledWith();
-      expect(result).toEqual(books.map(adaptBookEntityToPlainBookModel));
+      const expectedArray = books.map(PlainBookPresenter.from);
     });
-  });
-});*/
-
+  });*/
 });
+
